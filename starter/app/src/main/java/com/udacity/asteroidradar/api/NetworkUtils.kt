@@ -6,7 +6,9 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-
+//will use instead of Moshi
+//private val retrofit = Retrofit.Builder()
+//        .addConverterFactory(MoshiConverterFactory.create(parseAsteroidsJsonResult))
 fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<Asteroid> {
     val nearEarthObjectsJson = jsonResult.getJSONObject("near_earth_objects")
 
