@@ -1,7 +1,7 @@
 package com.udacity.asteroidradar.api
 
 import com.squareup.moshi.JsonClass
-import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.domain.Asteroid
 import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.Database.asteroidEntity
 import org.json.JSONObject
@@ -37,8 +37,10 @@ fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<Asteroid> {
             val isPotentiallyHazardous = asteroidJson
                 .getBoolean("is_potentially_hazardous_asteroid")
 
-            val asteroid = Asteroid(id, codename, formattedDate, absoluteMagnitude,
-                estimatedDiameter, relativeVelocity, distanceFromEarth, isPotentiallyHazardous)
+            val asteroid = Asteroid(
+                id, codename, formattedDate, absoluteMagnitude,
+                estimatedDiameter, relativeVelocity, distanceFromEarth, isPotentiallyHazardous
+            )
             asteroidList.add(asteroid)
         }
     }
@@ -106,3 +108,18 @@ fun NetworkAsteroidContainer.asDomainModel(): List<Asteroid> {
         )
     }
 }
+
+    fun List<asteroidEntity>.asDomainModel(): List<Asteroid> {
+        return map {
+            Asteroid(
+                id = it.id,
+                codename = it.codename,
+                closeApproachDate = it.closeApproachDate,
+                absoluteMagnitude = it.absoluteMagnitude,
+                estimatedDiameter = it.estimatedDiameter,
+                relativeVelocity = it.relativeVelocity,
+                distanceFromEarth = it.distanceFromEarth,
+                isPotentiallyHazardous = it.isPotentiallyHazardous
+            )
+        }
+    }

@@ -39,8 +39,9 @@ class VideosRepository(private val database: AsteroidDatabase) {
     val videos: LiveData<List<asteroidEntity>> =
         Transformations.map(database.asteroidDao.returnAll())
         {
-            //var hello : Int = database.asteroidDao.returnAll()
-            it//.asDomainModel()
+            var hello : Int = database.asteroidDao.returnAll()
+
+            it.asDomainModel()
         }
 
     /**
