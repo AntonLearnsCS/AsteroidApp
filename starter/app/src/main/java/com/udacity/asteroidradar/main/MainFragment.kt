@@ -25,15 +25,16 @@ class MainFragment : Fragment() {
         setHasOptionsMenu(true)
 
         //defines AsteroidAdapter for the xml as well as setting detailClick to the choosen asteroid
-        binding.asteroidRecycler.adapter = AsteroidAdapter(AsteroidAdapter.onClickListener
+        var adapter = AsteroidAdapter(AsteroidAdapter.onClickListener
         { viewModel.detailClick(it) }
         )
+        binding.asteroidRecycler.adapter = adapter
 
 
         //update the adapter list of asteroids
         //list is a liveData of List<Asteroid> so we can update the adapter by submiting "list"
         viewModel.list.observe(viewLifecycleOwner, Observer {
-            AsteroidAdapter.submitList(it)
+            adapter.submitList(it)
             /*asteroid.apply {
                 AsteroidAdapter?.videos = videos
             }*/
