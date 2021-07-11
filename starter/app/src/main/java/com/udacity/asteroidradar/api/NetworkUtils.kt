@@ -1,7 +1,9 @@
 package com.udacity.asteroidradar.api
 
+import com.squareup.moshi.JsonClass
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.Constants
+import com.udacity.asteroidradar.Database.asteroidEntity
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -56,4 +58,51 @@ private fun getNextSevenDaysFormattedDates(): ArrayList<String> {
     }
 
     return formattedDateList
+}
+@JsonClass(generateAdapter = true)
+data class NetworkAsteroidContainer(val networkAsteroidContainer: List<networkAsteroid>)
+
+@JsonClass(generateAdapter = true)
+    data class networkAsteroid(val id: Long, val codename: String, val closeApproachDate: String,
+val absoluteMagnitude: Double, val estimatedDiameter: Double,
+val relativeVelocity: Double, val distanceFromEarth: Double,
+val isPotentiallyHazardous: Boolean)
+
+//extension function that converts from data transfer objects to database objects
+//note that the database objects are just an array of entities/data classes
+//here we have an extension function from the data class "NetworkVideoContainer" that takes the parameter of the data class
+//which is of type "networkAsteroid" and maps it to a type of "asteroidEntity". Note that both data classes (networkAsteroid
+// and asteroidEntity) are exactly the same except for their annotation. This is where the seperation of concerns comes in b/c
+//we are annotating the "networkAsteroid" dataclass with "JsonClass", which lets Android know to store the network result in
+//"networkAsteroid" instead of the database dataclass annotated with "@entity"
+
+fun NetworkAsteroidContainer.asDatabaseModel(): Array<asteroidEntity> {
+    return networkAsteroidContainer.map {
+        asteroidEntity(
+            id = it.id,
+            codename = it.codename,
+            closeApproachDate = it.closeApproachDate,
+            absoluteMagnitude = it.absoluteMagnitude,
+            estimatedDiameter = it.estimatedDiameter,
+            relativeVelocity = it.relativeVelocity,
+            distanceFromEarth = it.distanceFromEarth,
+            isPotentiallyHazardous = it.isPotentiallyHazardous
+        )
+    }.toTypedArray()
+}
+
+//converts from data transfer objects to domain objects
+fun NetworkAsteroidContainer.asDomainModel(): List<Asteroid> {
+    return networkAsteroidContainer.map {
+        Asteroid(
+            id = it.id,
+            codename = it.codename,
+            closeApproachDate = it.closeApproachDate,
+            absoluteMagnitude = it.absoluteMagnitude,
+            estimatedDiameter = it.estimatedDiameter,
+            relativeVelocity = it.relativeVelocity,
+            distanceFromEarth = it.distanceFromEarth,
+            isPotentiallyHazardous = it.isPotentiallyHazardous
+        )
+    }
 }
