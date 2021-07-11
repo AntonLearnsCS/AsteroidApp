@@ -2,7 +2,6 @@ package com.udacity.asteroidradar.api
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.udacity.asteroidradar.Asteroid
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -41,7 +40,7 @@ import retrofit2.http.Query
          */
         @GET("feed")
         suspend fun getProperties(@Query("start_date") start_date: String?, @Query("end_date") end_date: String?,
-                                  @Query("api_key") api_key: String): List<Asteroid>
+                                  @Query("api_key") api_key: String): NetworkAsteroidContainer
 
     }
     interface pictureOfDay
@@ -53,7 +52,7 @@ import retrofit2.http.Query
     /**
      * A public Api object that exposes the lazy-initialized Retrofit service
      */
-    object MarsApi {
+    object AsteroidsApi {
         val retrofitService : AsteroidsApiService by lazy { retrofit.create(AsteroidsApiService::class.java) }
     }
 

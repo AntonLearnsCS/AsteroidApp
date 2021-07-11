@@ -3,7 +3,9 @@ package com.udacity.asteroidradar.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.udacity.asteroidradar.Asteroid
+import androidx.lifecycle.viewModelScope
+import com.udacity.asteroidradar.domain.Asteroid
+import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
@@ -19,6 +21,14 @@ private val _detailClick = MutableLiveData<Asteroid>() //will set MutableLiveDat
     fun completeClick()
     {
         _detailClick.value = null
+    }
+
+
+
+    fun getAsteroidDate()
+    {
+        viewModelScope.launch {
+        }
     }
 
 }

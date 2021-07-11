@@ -1,0 +1,71 @@
+package com.udacity.asteroidradar.repository
+
+/*
+ * Copyright 2018, The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import com.udacity.asteroidradar.Database.AsteroidDatabase
+import com.udacity.asteroidradar.Database.asteroidEntity
+import com.udacity.asteroidradar.api.*
+
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+class VideosRepository(private val database: AsteroidDatabase) {
+
+    /**
+     * A playlist of videos that can be shown on the screen.
+     */
+    val videos: LiveData<List<asteroidEntity>> =
+        Transformations.map(database.asteroidDao.returnAll())
+        {
+            var hello : Int = database.asteroidDao.returnAll()
+
+            it.asDomainModel()
+        }
+
+    /**
+     * Refresh the videos stored in the offline cache.
+     *
+     * This function uses the IO dispatcher to ensure the database insert database operation
+     * happens on the IO dispatcher. By switching to the IO dispatcher using `withContext` this
+     * function is now safe to call from any thread including the Main thread.
+     *
+     * To actually load the videos for use, observe [videos]
+     */
+    private val apiKey = "RGSQocYE7wIA2WbGRDSi4UnGJ6AgojgzFduwGOCJ"
+    @RequiresApi(Build.VERSION_CODES.O)
+    val current = LocalDateTime.now()
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    @RequiresApi(Build.VERSION_CODES.O)
+    val formatted = current.format(formatter)
+
+    suspend fun refreshAsteroidList() {
+        withContext(Dispatchers.IO) {
+            val playlist = AsteroidsApi.retrofitService.getProperties(apiKey, formatted, formatted) //returns a list of Asteroid objects from the network
+            database.asteroidDao.insertAll(*playlist.asDatabaseModel())
+        }
+    }
+}
