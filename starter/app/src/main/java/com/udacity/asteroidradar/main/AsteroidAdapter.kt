@@ -5,13 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.udacity.asteroidradar.domain.Asteroid
+import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.databinding.GridViewItemBinding
 
 //You must specify DiffCallBack when extending ListAdapter, DiffCallBack is a callback on each item in the viewHolder
 //Recall that ListAdapter utilizes DiffUtil (used to determine difference between two lists) in a background thread
-class AsteroidAdapter(val listener : onClickListener) : ListAdapter<Asteroid, AsteroidAdapter.AsteroidViewHolder>(DiffCallback) {
-
+class AsteroidAdapter(val listener : OnClickListener) : ListAdapter<Asteroid, AsteroidAdapter.AsteroidViewHolder>(DiffCallback) {
 
     class AsteroidViewHolder(private var binding: GridViewItemBinding):
         RecyclerView.ViewHolder(binding.root) {
@@ -28,7 +27,6 @@ class AsteroidAdapter(val listener : onClickListener) : ListAdapter<Asteroid, As
     companion object DiffCallback : DiffUtil.ItemCallback<Asteroid>() {
         override fun areContentsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
             return oldItem == newItem
-
         }
 
         override fun areItemsTheSame(oldItem: Asteroid, newItem: Asteroid): Boolean {
@@ -44,14 +42,17 @@ class AsteroidAdapter(val listener : onClickListener) : ListAdapter<Asteroid, As
         //Q: Where is "getItem" getting the item from? From which data structure is it returning an Asteroid object from?
         //A: Since we are extending listAdapter, listAdapter will generate a list of Asteroid objects for us in the background
         //See exercise7 on SleepTrackerWithRecyclerView lesson
-        holder.bind(getItem(position))
+        val asteroidItem = getItem(position)
+        holder.bind(asteroidItem)
         holder.itemView.setOnClickListener{
-
+            listener.onClick(asteroidItem)
         }
     }
-    class onClickListener(val listener : (asteroid : Asteroid) -> Unit) {
+    //Note: The paramter of onClickListener is a lambda expression that returns a Unit value
+    class OnClickListener(val listener : (asteroid : Asteroid) -> Unit) {
         fun onClick(asteroid : Asteroid) = listener(asteroid)
     }
+
 
     /*
         class OnClickListener(val clickListener: (marsProperty:MarsProperty) -> Unit) {

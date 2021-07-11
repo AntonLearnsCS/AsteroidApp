@@ -1,9 +1,9 @@
 package com.udacity.asteroidradar.api
 
 import com.squareup.moshi.JsonClass
-import com.udacity.asteroidradar.domain.Asteroid
+import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.Constants
-import com.udacity.asteroidradar.Database.asteroidEntity
+import com.udacity.asteroidradar.database.asteroidEntity
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -11,6 +11,7 @@ import kotlin.collections.ArrayList
 //will use instead of Moshi
 //private val retrofit = Retrofit.Builder()
 //        .addConverterFactory(MoshiConverterFactory.create(parseAsteroidsJsonResult))
+//this is the adapterCLass used to serialize the returning network request from Retrofit
 fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<Asteroid> {
     val nearEarthObjectsJson = jsonResult.getJSONObject("near_earth_objects")
 
@@ -61,14 +62,18 @@ private fun getNextSevenDaysFormattedDates(): ArrayList<String> {
 
     return formattedDateList
 }
-@JsonClass(generateAdapter = true)
+//no need since parseAsteroidsJsonResult will convert a JSON object to a List<Asteroid>
+//The annotation @JsonClass(generateAdapter = true) is for generating an adapter class that converts the returned JSON object
+//to an array of "asteroids". The annotation provides an adapter similar to the given "parseAsteroidsJsonResult" function
+//see: https://stackoverflow.com/questions/58501918/whats-the-use-of-moshis-kotlin-codegen
+/*@JsonClass(generateAdapter = true)
 data class NetworkAsteroidContainer(val networkAsteroidContainer: List<networkAsteroid>)
 
 @JsonClass(generateAdapter = true)
     data class networkAsteroid(val id: Long, val codename: String, val closeApproachDate: String,
 val absoluteMagnitude: Double, val estimatedDiameter: Double,
 val relativeVelocity: Double, val distanceFromEarth: Double,
-val isPotentiallyHazardous: Boolean)
+val isPotentiallyHazardous: Boolean)*/
 
 //extension function that converts from data transfer objects to database objects
 //note that the database objects are just an array of entities/data classes
@@ -78,8 +83,8 @@ val isPotentiallyHazardous: Boolean)
 //we are annotating the "networkAsteroid" dataclass with "JsonClass", which lets Android know to store the network result in
 //"networkAsteroid" instead of the database dataclass annotated with "@entity"
 
-fun NetworkAsteroidContainer.asDatabaseModel(): Array<asteroidEntity> {
-    return networkAsteroidContainer.map {
+fun List<Asteroid>.asDatabaseModel(): Array<asteroidEntity> {
+    return map {
         asteroidEntity(
             id = it.id,
             codename = it.codename,
@@ -93,22 +98,8 @@ fun NetworkAsteroidContainer.asDatabaseModel(): Array<asteroidEntity> {
     }.toTypedArray()
 }
 
-//converts from data transfer objects to domain objects
-fun NetworkAsteroidContainer.asDomainModel(): List<Asteroid> {
-    return networkAsteroidContainer.map {
-        Asteroid(
-            id = it.id,
-            codename = it.codename,
-            closeApproachDate = it.closeApproachDate,
-            absoluteMagnitude = it.absoluteMagnitude,
-            estimatedDiameter = it.estimatedDiameter,
-            relativeVelocity = it.relativeVelocity,
-            distanceFromEarth = it.distanceFromEarth,
-            isPotentiallyHazardous = it.isPotentiallyHazardous
-        )
-    }
-}
-
+    //In this case, by simply restating the parameters we can convert asteroidEntity to Asteroid since they only differ by
+    //annotation
     fun List<asteroidEntity>.asDomainModel(): List<Asteroid> {
         return map {
             Asteroid(

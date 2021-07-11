@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
+import com.udacity.asteroidradar.repository.AsteroidRepository
 
 class MainFragment : Fragment() {
 
@@ -24,10 +25,25 @@ class MainFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        binding.asteroidRecycler.adapter = AsteroidAdapter(AsteroidAdapter.onClickListener
-        { viewModel.detailClick(it) }
+        //defines AsteroidAdapter for the xml as well as setting detailClick to the choosen asteroid
+        val adapter = AsteroidAdapter(AsteroidAdapter.OnClickListener
+        {
+            //this is the lambda expression that onClickListener takes as a parameter; "it" refers to "listener"
+            viewModel.detailClick(it)}
         )
 
+        binding.asteroidRecycler.adapter = adapter
+
+
+        //update the adapter list of asteroids
+        //list is a liveData of List<Asteroid> so we can update the adapter by submitting "list"
+        viewModel.list.observe(viewLifecycleOwner, Observer {
+            adapter.submitList(it)
+            /*asteroid.apply {
+                AsteroidAdapter?.videos = videos
+            }*/
+        }
+            )
         viewModel.detailClick.observe(viewLifecycleOwner, Observer {
             if (it != null)
             {
@@ -35,6 +51,7 @@ class MainFragment : Fragment() {
                 findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
             }
         })
+
         return binding.root
     }
 
@@ -47,3 +64,4 @@ class MainFragment : Fragment() {
         return true
     }
 }
+
