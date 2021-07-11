@@ -1,5 +1,8 @@
 package com.udacity.asteroidradar.api
 
+import android.view.animation.Transformation
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.Transformations.map
 import com.squareup.moshi.JsonClass
 import com.udacity.asteroidradar.domain.Asteroid
 import com.udacity.asteroidradar.Constants

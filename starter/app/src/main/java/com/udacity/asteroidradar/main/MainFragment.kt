@@ -24,10 +24,21 @@ class MainFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
+        //defines AsteroidAdapter for the xml as well as setting detailClick to the choosen asteroid
         binding.asteroidRecycler.adapter = AsteroidAdapter(AsteroidAdapter.onClickListener
         { viewModel.detailClick(it) }
         )
 
+
+        //update the adapter list of asteroids
+        //list is a liveData of List<Asteroid> so we can update the adapter by submiting "list"
+        viewModel.list.observe(viewLifecycleOwner, Observer {
+            AsteroidAdapter.submitList(it)
+            /*asteroid.apply {
+                AsteroidAdapter?.videos = videos
+            }*/
+        }
+            )
         viewModel.detailClick.observe(viewLifecycleOwner, Observer {
             if (it != null)
             {
@@ -35,6 +46,9 @@ class MainFragment : Fragment() {
                 findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
             }
         })
+
+
+
         return binding.root
     }
 
@@ -46,4 +60,5 @@ class MainFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return true
     }
+}
 }

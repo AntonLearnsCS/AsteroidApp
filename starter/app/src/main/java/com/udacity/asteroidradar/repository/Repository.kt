@@ -23,27 +23,24 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.Database.AsteroidDatabase
-import com.udacity.asteroidradar.Database.asteroidEntity
 import com.udacity.asteroidradar.api.*
+import com.udacity.asteroidradar.domain.Asteroid
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class VideosRepository(private val database: AsteroidDatabase) {
+class AsteroidRepository(private val database: AsteroidDatabase) {
 
     /**
-     * A playlist of videos that can be shown on the screen.
+     * A list of Asteroids that can be shown on the screen.
      */
-    val videos: LiveData<List<asteroidEntity>> =
+    val domainAsteroidList: LiveData<List<Asteroid>> =
         Transformations.map(database.asteroidDao.returnAll())
         {
-            var hello : Int = database.asteroidDao.returnAll()
-
             it.asDomainModel()
         }
-
     /**
      * Refresh the videos stored in the offline cache.
      *
@@ -51,7 +48,7 @@ class VideosRepository(private val database: AsteroidDatabase) {
      * happens on the IO dispatcher. By switching to the IO dispatcher using `withContext` this
      * function is now safe to call from any thread including the Main thread.
      *
-     * To actually load the videos for use, observe [videos]
+     * To actually load the videos for use, observe [domainAsteroidList]
      */
     private val apiKey = "RGSQocYE7wIA2WbGRDSi4UnGJ6AgojgzFduwGOCJ"
     @RequiresApi(Build.VERSION_CODES.O)
