@@ -3,10 +3,10 @@
     <data>
         <variable
             name="asteroid"
-            type="com.udacity.asteroidradar.domain.Asteroid" />
+            type="com.udacity.asteroidradar.Asteroid" />
         <variable
             name="viewModel"
-            type="com.udacity.asteroidradar.main.AsteroidAdapter.onClickListener" />
+            type="com.udacity.asteroidradar.main.AsteroidAdapter.OnClickListener" />
     </data>
 
 
@@ -17,10 +17,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 <!-- Q: Why is width "match parent?"
-A: RecyclerView will adjust based on space available-->
+A: RecyclerView will adjust based on space available
+
+  android:onClick="@{()->viewModel.onClick(asteroid)}"
+
+-->
     <ImageView
         android:id="@+id/mars_image"
-        android:onClick="@{()->viewModel.onClick(asteroid)}"
         android:layout_width="match_parent"
         android:layout_height="170dp"
         android:adjustViewBounds="true"

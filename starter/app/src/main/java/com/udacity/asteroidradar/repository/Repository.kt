@@ -22,9 +22,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.udacity.asteroidradar.Database.AsteroidDatabase
+import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.api.*
-import com.udacity.asteroidradar.domain.Asteroid
+import com.udacity.asteroidradar.Asteroid
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -61,7 +61,8 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
 
     suspend fun refreshAsteroidList() {
         withContext(Dispatchers.IO) {
-            val playlist = AsteroidsApi.retrofitService.getProperties(apiKey, formatted, formatted) //returns a list of Asteroid objects from the network
+            val playlist = parseAsteroidsJsonResult(AsteroidsApi.retrofitService.getProperties(apiKey, formatted, formatted)) //returns a list of Asteroid objects from the network
+            //parseAsteroidsJsonResult
             database.asteroidDao.insertAll(*playlist.asDatabaseModel())
         }
     }

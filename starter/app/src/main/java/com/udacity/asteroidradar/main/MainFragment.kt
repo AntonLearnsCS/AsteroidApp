@@ -25,11 +25,13 @@ class MainFragment : Fragment() {
         setHasOptionsMenu(true)
 
         //defines AsteroidAdapter for the xml as well as setting detailClick to the choosen asteroid
-        var adapter = AsteroidAdapter(AsteroidAdapter.onClickListener
-        { viewModel.detailClick(it) }
+        val adapter = AsteroidAdapter(AsteroidAdapter.OnClickListener
+        {
+            //this is the lambda expression that onClickListener takes as a parameter; "it" refers to "listener"
+            viewModel.detailClick(it)}
         )
-        binding.asteroidRecycler.adapter = adapter
 
+        binding.asteroidRecycler.adapter = adapter
 
         //update the adapter list of asteroids
         //list is a liveData of List<Asteroid> so we can update the adapter by submiting "list"
@@ -47,9 +49,6 @@ class MainFragment : Fragment() {
                 findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
             }
         })
-
-
-
         return binding.root
     }
 
@@ -62,4 +61,4 @@ class MainFragment : Fragment() {
         return true
     }
 }
-}
+

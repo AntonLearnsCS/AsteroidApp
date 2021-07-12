@@ -1,4 +1,4 @@
-package com.udacity.asteroidradar.Database
+package com.udacity.asteroidradar.database
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -16,7 +16,10 @@ interface AsteroidDao
 //recall that the order of the variables do not have to match the order by which the properties appear on the JSON array
 //but they do need to match the name of the properties listed on the JSON array
 @Entity
-data class asteroidEntity(val id: Long, val codename: String, val closeApproachDate: String,
+data class asteroidEntity(
+    @PrimaryKey
+    val id: Long,
+    val codename: String, val closeApproachDate: String,
                           val absoluteMagnitude: Double, val estimatedDiameter: Double,
                           val relativeVelocity: Double, val distanceFromEarth: Double,
                           val isPotentiallyHazardous: Boolean)

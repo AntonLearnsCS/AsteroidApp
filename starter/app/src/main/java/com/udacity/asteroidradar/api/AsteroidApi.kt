@@ -2,6 +2,7 @@ package com.udacity.asteroidradar.api
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -40,9 +41,11 @@ import retrofit2.http.Query
          */
         @GET("feed")
         suspend fun getProperties(@Query("start_date") start_date: String?, @Query("end_date") end_date: String?,
-                                  @Query("api_key") api_key: String): NetworkAsteroidContainer
-
+                                  @Query("api_key") api_key: String): JSONObject
+        //note, when requesting a JSON response, we can specify the JSON response to be of type: JsonArray, JsonObject,
+        // or JsonStringer.
     }
+
     interface pictureOfDay
     {
         @GET("apod")
@@ -55,5 +58,9 @@ import retrofit2.http.Query
     object AsteroidsApi {
         val retrofitService : AsteroidsApiService by lazy { retrofit.create(AsteroidsApiService::class.java) }
     }
+    object pictureOfDayApi{
+        val retrofitService : pictureOfDayApi by lazy { retrofit.create(pictureOfDayApi::class.java) }
+    }
+
 
 
