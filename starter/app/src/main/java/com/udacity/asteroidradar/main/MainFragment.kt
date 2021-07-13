@@ -34,8 +34,9 @@ class MainFragment : Fragment() {
 
         binding.asteroidRecycler.adapter = adapter
 
+
         //update the adapter list of asteroids
-        //list is a liveData of List<Asteroid> so we can update the adapter by submiting "list"
+        //list is a liveData of List<Asteroid> so we can update the adapter by submitting "list"
         viewModel.list.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
             /*asteroid.apply {

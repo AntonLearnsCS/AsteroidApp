@@ -29,6 +29,7 @@ import com.udacity.asteroidradar.PictureOfDay
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -51,6 +52,7 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
      *
      * To actually load the videos for use, observe [domainAsteroidList]
      */
+
     private val apiKey = "RGSQocYE7wIA2WbGRDSi4UnGJ6AgojgzFduwGOCJ"
     @RequiresApi(Build.VERSION_CODES.O)
     val current = LocalDateTime.now()
@@ -60,15 +62,25 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
     @RequiresApi(Build.VERSION_CODES.O)
     val formatted = current.format(formatter)
 
-
     suspend fun refreshAsteroidList() {
         withContext(Dispatchers.IO) {
             //returns a list of Asteroid objects from the network
             //TODO: Receiving error here
-            val refreshedAsteroid = parseAsteroidsJsonResult(AsteroidsApi.retrofitService.getProperties( formatted, apiKey))
-            database.asteroidDao.insertAll(*refreshedAsteroid.asDatabaseModel())
+            try {
+                val refreshedAsteroid = parseAsteroidsJsonResult(
+                    AsteroidsApi.retrofitService.getProperties(
+                        formatted,
+                        apiKey
+                    )
+                )
+                database.asteroidDao.insertAll(*refreshedAsteroid.asDatabaseModel())
 
-            val refreshedPictureOfDay = pictureOfDayApi.retrofitService.getPicture(apiKey)
+                val refreshedPictureOfDay = pictureOfDayApi.retrofitService.getPicture(apiKey)
+            }
+            catch (e : Exception)
+            {
+                e.printStackTrace()
+            }
             //TODO: Save Picture of day into local database
         }
     }

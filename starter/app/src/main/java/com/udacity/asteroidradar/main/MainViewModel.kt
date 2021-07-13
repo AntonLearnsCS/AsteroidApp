@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.Asteroid
@@ -22,6 +23,7 @@ class MainViewModel (application: Application) : AndroidViewModel(application)
 
     private val AsteroidRepository = AsteroidRepository(database)
     init {
+        Log.i("MainViewModel","")
         viewModelScope.launch {
             AsteroidRepository.refreshAsteroidList()
         }
