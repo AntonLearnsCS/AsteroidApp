@@ -25,6 +25,7 @@ import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.api.*
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.PictureOfDay
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -64,8 +65,11 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
         withContext(Dispatchers.IO) {
             //returns a list of Asteroid objects from the network
             //TODO: Receiving error here
-            val playlist = parseAsteroidsJsonResult(AsteroidsApi.retrofitService.getProperties(apiKey, formatted, formatted))
-            database.asteroidDao.insertAll(*playlist.asDatabaseModel())
+            val refreshedAsteroid = parseAsteroidsJsonResult(AsteroidsApi.retrofitService.getProperties( formatted, apiKey))
+            database.asteroidDao.insertAll(*refreshedAsteroid.asDatabaseModel())
+
+            val refreshedPictureOfDay = pictureOfDayApi.retrofitService.getPicture(apiKey)
+            //TODO: Save Picture of day into local database
         }
     }
 }
