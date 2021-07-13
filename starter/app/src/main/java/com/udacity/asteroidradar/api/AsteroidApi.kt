@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar.api
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.json.JSONObject
@@ -27,6 +28,7 @@ import retrofit2.http.Query
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addConverterFactory(ScalarsConverterFactory.create())
+        .addCallAdapterFactory(CoroutineCallAdapterFactory()) //allows us to replace the callback methods for Retrofit with coroutine
         .baseUrl(BASE_URL)
         .build()
 

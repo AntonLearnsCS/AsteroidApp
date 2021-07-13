@@ -59,10 +59,12 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
     @RequiresApi(Build.VERSION_CODES.O)
     val formatted = current.format(formatter)
 
+
     suspend fun refreshAsteroidList() {
         withContext(Dispatchers.IO) {
-            val playlist = parseAsteroidsJsonResult(AsteroidsApi.retrofitService.getProperties(apiKey, formatted, formatted)) //returns a list of Asteroid objects from the network
-            //parseAsteroidsJsonResult
+            //returns a list of Asteroid objects from the network
+            //TODO: Receiving error here
+            val playlist = parseAsteroidsJsonResult(AsteroidsApi.retrofitService.getProperties(apiKey, formatted, formatted))
             database.asteroidDao.insertAll(*playlist.asDatabaseModel())
         }
     }

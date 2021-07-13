@@ -11,6 +11,7 @@ import kotlin.collections.ArrayList
 //will use instead of Moshi
 //private val retrofit = Retrofit.Builder()
 //        .addConverterFactory(MoshiConverterFactory.create(parseAsteroidsJsonResult))
+//this is the adapterCLass used to serialize the returning network request from Retrofit
 fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<Asteroid> {
     val nearEarthObjectsJson = jsonResult.getJSONObject("near_earth_objects")
 
@@ -62,7 +63,9 @@ private fun getNextSevenDaysFormattedDates(): ArrayList<String> {
     return formattedDateList
 }
 //no need since parseAsteroidsJsonResult will convert a JSON object to a List<Asteroid>
-
+//The annotation @JsonClass(generateAdapter = true) is for generating an adapter class that converts the returned JSON object
+//to an array of "asteroids". The annotation provides an adapter similar to the given "parseAsteroidsJsonResult" function
+//see: https://stackoverflow.com/questions/58501918/whats-the-use-of-moshis-kotlin-codegen
 /*@JsonClass(generateAdapter = true)
 data class NetworkAsteroidContainer(val networkAsteroidContainer: List<networkAsteroid>)
 
