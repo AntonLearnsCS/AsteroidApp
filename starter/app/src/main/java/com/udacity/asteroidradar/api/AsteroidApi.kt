@@ -30,8 +30,8 @@ import retrofit2.http.Query
     //Note: Ordering of added converters matters b/c Retrofit checks each converter if it's able of handling
     // the specified data type
     private val retrofit = Retrofit.Builder()
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addConverterFactory(ScalarsConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addCallAdapterFactory(CoroutineCallAdapterFactory()) //allows us to replace the callback methods for Retrofit with coroutine
         .baseUrl(BASE_URL)
         .build()

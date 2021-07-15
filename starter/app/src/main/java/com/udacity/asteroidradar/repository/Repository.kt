@@ -19,6 +19,7 @@ package com.udacity.asteroidradar.repository
 
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
@@ -79,7 +80,8 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
             }
             catch (e : Exception)
             {
-                e.printStackTrace()
+                Log.e("repo","error",e)
+                //e.printStackTrace()
             }
             //TODO: Save Picture of day into local database
         }
