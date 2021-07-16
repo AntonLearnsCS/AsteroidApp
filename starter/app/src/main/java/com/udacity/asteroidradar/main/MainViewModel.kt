@@ -23,9 +23,10 @@ class MainViewModel (application: Application) : AndroidViewModel(application)
 
     private val AsteroidRepository = AsteroidRepository(database)
     init {
-        Log.i("MainViewModel","")
+
         viewModelScope.launch {
             AsteroidRepository.refreshAsteroidList()
+            //Log.i("viewModel repo size: ",AsteroidRepository.domainAsteroidList.value?.size.toString())
         }
     }
     var list : LiveData<List<Asteroid>> = AsteroidRepository.domainAsteroidList

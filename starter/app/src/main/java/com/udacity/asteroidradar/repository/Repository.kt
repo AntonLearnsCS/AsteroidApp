@@ -30,6 +30,7 @@ import com.udacity.asteroidradar.PictureOfDay
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import java.lang.Exception
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -44,6 +45,7 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
         {
             it.asDomainModel()
         }
+
     /**
      * Refresh the videos stored in the offline cache.
      *
@@ -68,18 +70,22 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
             //returns a list of Asteroid objects from the network
             //TODO: Receiving error here
             try {
-                val refreshedAsteroid = parseAsteroidsJsonResult(
+                val refreshedAsteroid : List<Asteroid> = parseAsteroidsJsonResult(
+                    //we set the interface return type to String that way Retrofit won't demand a converter just yet
+                    //we can then convert the String result to a JSONObject using the syntax below
+                    JSONObject(
                     AsteroidsApi.retrofitService.getProperties(
                         formatted,
                         apiKey
-                    )
+                    ))
                 )
                 database.asteroidDao.insertAll(*refreshedAsteroid.asDatabaseModel())
-
+                Log.i("repo size:", database.asteroidDao.returnAll().value?.size.toString())
                 val refreshedPictureOfDay = pictureOfDayApi.retrofitService.getPicture(apiKey)
             }
             catch (e : Exception)
             {
+                Log.i("repo","errorRepo")
                 Log.e("repo","error",e)
                 //e.printStackTrace()
             }

@@ -10,6 +10,7 @@ interface AsteroidDao
     @Query("select * from asteroidEntity")
     fun returnAll() : LiveData<List<asteroidEntity>>
 
+    //conflicStrategy will ensure that if two entities have the same primary key, we will replace the old entitity
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg asteroid: asteroidEntity)
 }
