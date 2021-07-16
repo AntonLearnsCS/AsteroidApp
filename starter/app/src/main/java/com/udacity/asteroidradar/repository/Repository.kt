@@ -22,6 +22,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.api.*
@@ -30,6 +31,7 @@ import com.udacity.asteroidradar.PictureOfDay
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import java.lang.Exception
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -39,7 +41,42 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
     /**
      * A list of Asteroids that can be shown on the screen.
      */
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    val current = LocalDateTime.now()
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun adjustDate(current : LocalDateTime ): LocalDateTime
+    {
+        val constantWeek = current.plusDays(7)
+        return constantWeek
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun convertStringToLocal(myString: String) : LocalDateTime
+    {
+        val localLocal = LocalDateTime.parse(myString)
+        return localLocal
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    @RequiresApi(Build.VERSION_CODES.O)
+    val formatted = current.format(formatter)
+
+
     val domainAsteroidList: LiveData<List<Asteroid>> =
+        Transformations.map(database.asteroidDao.returnAll())
+        {
+            it.asDomainModel()
+        }
+
+    var domainAsteroidTodayList: LiveData<List<Asteroid>> =
+        Transformations.map(database.asteroidDao.getToday(formatted))
+        {
+            it.asDomainModel()
+        }
+
+    var domainAsteroidSavedList : LiveData<List<Asteroid>> =
         Transformations.map(database.asteroidDao.returnAll())
         {
             it.asDomainModel()
@@ -54,32 +91,36 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
      * To actually load the videos for use, observe [domainAsteroidList]
      */
 
+
     private val apiKey = "RGSQocYE7wIA2WbGRDSi4UnGJ6AgojgzFduwGOCJ"
-    @RequiresApi(Build.VERSION_CODES.O)
-    val current = LocalDateTime.now()
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    @RequiresApi(Build.VERSION_CODES.O)
-    val formatted = current.format(formatter)
 
+
+
+    /*Calendar calendar=Calendar.getInstance();
+//rollback 90 days
+    calendar.add(Calendar.DAY_OF_YEAR, -90);*/
     suspend fun refreshAsteroidList() {
         withContext(Dispatchers.IO) {
             //returns a list of Asteroid objects from the network
             //TODO: Receiving error here
             try {
-                val refreshedAsteroid = parseAsteroidsJsonResult(
+                val refreshedAsteroid : List<Asteroid> = parseAsteroidsJsonResult(
+                    //we set the interface return type to String that way Retrofit won't demand a converter just yet
+                    //we can then convert the String result to a JSONObject using the syntax below
+                    JSONObject(
                     AsteroidsApi.retrofitService.getProperties(
                         formatted,
                         apiKey
-                    )
+                    ))
                 )
                 database.asteroidDao.insertAll(*refreshedAsteroid.asDatabaseModel())
-
+                //Log.i("repo size:", database.asteroidDao.returnAll().value?.size.toString())
                 val refreshedPictureOfDay = pictureOfDayApi.retrofitService.getPicture(apiKey)
             }
             catch (e : Exception)
             {
+                Log.i("repo","errorRepo")
                 Log.e("repo","error",e)
                 //e.printStackTrace()
             }

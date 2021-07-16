@@ -1,5 +1,7 @@
 package com.udacity.asteroidradar.api
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import com.squareup.moshi.JsonClass
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.Constants
@@ -114,3 +116,4 @@ fun List<Asteroid>.asDatabaseModel(): Array<asteroidEntity> {
             )
         }
     }
+

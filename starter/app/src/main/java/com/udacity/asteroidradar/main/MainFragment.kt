@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -8,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
-import com.udacity.asteroidradar.repository.AsteroidRepository
 
 class MainFragment : Fragment() {
 
@@ -34,21 +34,35 @@ class MainFragment : Fragment() {
 
         binding.asteroidRecycler.adapter = adapter
 
+        /*viewModel.menuItemSelected.observe(viewLifecycleOwner, Observer {
 
+            if (it.equals("Today"))
+            {
+              viewModel.setMasterToSaved(viewModel.domainAsteroidTodayList)
+                //viewModel.masterList.value = viewModel.domainAsteroidTodayList.value
+            }
+            else if (it.equals("Saved"))
+            {
+                Log.i("MainSavedList",viewModel.domainAsteroidSavedList.value?.size.toString())
+                viewModel.setMasterToSaved(viewModel.domainAsteroidSavedList)
+                //viewModel.masterList.value = viewModel.domainAsteroidSavedList.value
+            }
+            else
+                viewModel.setMasterToSaved(viewModel.list)
+            //viewModel.masterList.value = viewModel.list.value
+        })*/
         //update the adapter list of asteroids
         //list is a liveData of List<Asteroid> so we can update the adapter by submitting "list"
+
+        //adapter.submitList(viewModel.list.value)
         viewModel.list.observe(viewLifecycleOwner, Observer {
-            adapter.submitList(it)
-            /*asteroid.apply {
-                AsteroidAdapter?.videos = videos
-            }*/
-        }
-            )
+               adapter.submitList(it)
+        })
         viewModel.detailClick.observe(viewLifecycleOwner, Observer {
             if (it != null)
             {
                 //pass in the Asteroid object to safeArgs to be viewed in the detailFragment
-                findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
+               this.findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
             }
         })
 
@@ -61,6 +75,12 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        viewModel.menuItemSelected.value =
+            when (item.itemId) {
+                R.id.show_today_asteroid -> "Today"
+                R.id.show_saved_asteroid -> "Saved"
+                else -> "Week"
+    }
         return true
     }
 }
