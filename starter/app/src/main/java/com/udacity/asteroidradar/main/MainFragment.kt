@@ -48,7 +48,7 @@ class MainFragment : Fragment() {
             if (it != null)
             {
                 //pass in the Asteroid object to safeArgs to be viewed in the detailFragment
-                findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
+               this.findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
             }
         })
 

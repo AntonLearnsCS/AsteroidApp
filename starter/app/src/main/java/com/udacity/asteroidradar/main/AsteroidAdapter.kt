@@ -2,18 +2,26 @@ package com.udacity.asteroidradar.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.GridViewItemBinding
 
 //You must specify DiffCallBack when extending ListAdapter, DiffCallBack is a callback on each item in the viewHolder
 //Recall that ListAdapter utilizes DiffUtil (used to determine difference between two lists) in a background thread
 class AsteroidAdapter(val listener : OnClickListener) : ListAdapter<Asteroid, AsteroidAdapter.AsteroidViewHolder>(DiffCallback) {
 
+    //TODO: Compiler not recognizing GridViewItemBinding implementation
     class AsteroidViewHolder(private var binding: GridViewItemBinding):
         RecyclerView.ViewHolder(binding.root) {
+        companion object {
+            @LayoutRes
+            val LAYOUT = R.layout.grid_view_item
+        }
         fun bind(asteroid: Asteroid) {
             binding.asteroid = asteroid
             // This is important, because it forces the data binding to execute immediately,
@@ -35,8 +43,14 @@ class AsteroidAdapter(val listener : OnClickListener) : ListAdapter<Asteroid, As
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AsteroidViewHolder {
         //returns an inflated viewHolder by passing in a new GridViewItemBinding object into the viewHolder
-       return AsteroidViewHolder(GridViewItemBinding.inflate(LayoutInflater.from(parent.context)))
-        }
+       //return AsteroidViewHolder(GridViewItemBinding.inflate(LayoutInflater.from(parent.context)))
+        val withDataBinding: GridViewItemBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            AsteroidViewHolder.LAYOUT,
+            parent,
+            false)
+        return AsteroidViewHolder(withDataBinding)
+    }
 
     override fun onBindViewHolder(holder: AsteroidViewHolder, position: Int) {
         //Q: Where is "getItem" getting the item from? From which data structure is it returning an Asteroid object from?
