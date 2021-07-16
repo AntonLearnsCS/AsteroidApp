@@ -42,7 +42,6 @@ import retrofit2.http.Query
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .baseUrl(BASE_URL_Pic_Day)
         .build()
-
 /**
      * A public interface that exposes the [getProperties] method
      */
