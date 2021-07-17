@@ -41,7 +41,7 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
      * A list of Asteroids that can be shown on the screen.
      */
     val domainAsteroidList: LiveData<List<Asteroid>> =
-        Transformations.map(database.asteroidDao.returnAll())
+        Transformations.map(database.asteroidDao.getToday())
         {
             it.asDomainModel()
         }
@@ -55,16 +55,28 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
      *
      * To actually load the videos for use, observe [domainAsteroidList]
      */
+    enum class AsteroidApiFilter(val value: String) { SHOW_WEEK(""), SHOW_TODAY("buy"), SHOW_SAVED("all")
+    }
 
     private val apiKey = "RGSQocYE7wIA2WbGRDSi4UnGJ6AgojgzFduwGOCJ"
     @RequiresApi(Build.VERSION_CODES.O)
     val current = LocalDateTime.now()
 
     @RequiresApi(Build.VERSION_CODES.O)
+    fun adjustDate(current : LocalDateTime ): LocalDateTime
+    {
+        val constantWeek = current.plusDays(7)
+        return constantWeek
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     @RequiresApi(Build.VERSION_CODES.O)
     val formatted = current.format(formatter)
 
+    /*Calendar calendar=Calendar.getInstance();
+//rollback 90 days
+    calendar.add(Calendar.DAY_OF_YEAR, -90);*/
     suspend fun refreshAsteroidList() {
         withContext(Dispatchers.IO) {
             //returns a list of Asteroid objects from the network

@@ -19,8 +19,8 @@ fun statusAdapter(imageView: ImageView, isHazardous : Boolean)
 @BindingAdapter("picassoAdapter")
 fun picassoAdapter(imageView: ImageView, pictureOfDay: PictureOfDay?)
 {
-    if (pictureOfDay?.mediaType.equals("image"))
-    Picasso.with(imageView.context).load(pictureOfDay?.url).into(imageView)
+    if (pictureOfDay != null && pictureOfDay.mediaType.equals("image"))
+    Picasso.with(imageView.context).load(pictureOfDay.url).into(imageView)
     else
         Picasso.with(imageView.context).load(R.drawable.ic_help_circle).into(imageView)
 }

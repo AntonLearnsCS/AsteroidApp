@@ -4,9 +4,20 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
+var test = "%2021-07-15%"
 @Dao
 interface AsteroidDao
 {
+    //reference: https://stackoverflow.com/questions/44184769/android-room-select-query-with-like
+    @Query("select * from asteroidEntity where closeApproachDate = '%' || :test || '%'")
+    fun getToday(test : String) : LiveData<List<asteroidEntity>>
+
+
+    /*
+    @Query("SELECT * FROM countries WHERE id = :arg0")
+fun loadCountry(countryId: Int): LiveData<CountryEntity>
+     */
+
     @Query("select * from asteroidEntity")
     fun returnAll() : LiveData<List<asteroidEntity>>
 

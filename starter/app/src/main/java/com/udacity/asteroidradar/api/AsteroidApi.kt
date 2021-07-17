@@ -45,6 +45,7 @@ import retrofit2.http.Query
 /**
      * A public interface that exposes the [getProperties] method
      */
+
     interface AsteroidsApiService {
         /**
          * Returns a Coroutine [List] of [MarsProperty] which can be fetched with await() if in a Coroutine scope.
@@ -58,6 +59,8 @@ import retrofit2.http.Query
         //we can then convert the String result to a JSONObject using the syntax below
         //note, when requesting a JSON response, we can specify the JSON response to be of type: JsonArray, JsonObject,
         // or JsonStringer.
+
+
     }
 
     interface pictureOfDay
