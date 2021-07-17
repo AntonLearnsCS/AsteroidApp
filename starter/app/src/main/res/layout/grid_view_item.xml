@@ -12,41 +12,42 @@
     </data>
 
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-<!-- Q: Why is width "match parent?"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!-- Q: Why is width "match parent?"
 A: RecyclerView will adjust based on space available
 
   android:onClick="@{()->viewModel.onClick(asteroid)}"
 
 -->
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="81dp"
-        android:layout_height="70dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        picassoAdapter="@{asteroid.potentiallyHazardous}"
-        app:layout_constraintTop_toTopOf="@+id/asteroid_name"
-        tools:srcCompat="@tools:sample/avatars" />
+        <ImageView
+            android:id="@+id/imageView"
+            statusAdapter="@{asteroid.potentiallyHazardous}"
+            android:layout_width="58dp"
+            android:layout_height="45dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/asteroid_name"
+            tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/asteroid_name"
-        android:layout_width="match_parent"
-        android:layout_height="27dp"
-        android:text="@{String.valueOf(asteroid.distanceFromEarth)}"
-        android:textColor="@color/cardview_light_background"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
-<!-- -->
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/cardview_light_background"
-        android:text="@{String.valueOf(asteroid.distanceFromEarth)}"
-        app:layout_constraintTop_toBottomOf="@+id/asteroid_name"
-        tools:layout_editor_absoluteX="45dp" />
-    <!-- -->
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/asteroid_name"
+            style="@style/grid_style"
+            android:text="@{String.valueOf(asteroid.codename)}"
+            app:layout_constraintBottom_toTopOf="@+id/nearby_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <!-- -->
+        <TextView
+            android:id="@+id/nearby_date"
+            style="@style/grid_style"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:text="@{String.valueOf(asteroid.closeApproachDate)}"
+            android:textColor="@color/cardview_light_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/asteroid_name" />
+        <!-- -->
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

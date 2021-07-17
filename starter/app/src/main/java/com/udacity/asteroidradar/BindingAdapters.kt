@@ -6,14 +6,23 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.main.AsteroidAdapter
+import okhttp3.MediaType
 
 @BindingAdapter("statusAdapter")
-fun picassoAdapter(imageView: ImageView, isHazardous : Boolean)
+fun statusAdapter(imageView: ImageView, isHazardous : Boolean)
 {
     if (isHazardous)
     imageView.setImageResource(R.drawable.ic_status_potentially_hazardous)
     else
     imageView.setImageResource(R.drawable.ic_status_normal)
+}
+@BindingAdapter("picassoAdapter")
+fun picassoAdapter(imageView: ImageView, pictureOfDay: PictureOfDay?)
+{
+    if (pictureOfDay?.mediaType.equals("image"))
+    Picasso.with(imageView.context).load(pictureOfDay?.url).into(imageView)
+    else
+        Picasso.with(imageView.context).load(R.drawable.ic_help_circle).into(imageView)
 }
 
 /*@BindingAdapter("listData")

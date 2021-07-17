@@ -27,7 +27,9 @@ class MainViewModel (application: Application) : AndroidViewModel(application)
         viewModelScope.launch {
             AsteroidRepository.refreshAsteroidList()
             //Log.i("viewModel repo size: ",AsteroidRepository.domainAsteroidList.value?.size.toString())
+            getPictureOfDay()
         }
+       // pictureOfDay.value?.url?.let { Log.i("viewModel", it) }
     }
     var list : LiveData<List<Asteroid>> = AsteroidRepository.domainAsteroidList
 
@@ -47,22 +49,8 @@ class MainViewModel (application: Application) : AndroidViewModel(application)
     {
         _detailClick.value = null
     }
-    private fun getPictureOfDay() {
-        viewModelScope.launch {
-            try {
-                    _pictureOfDay.value = pictureOfDayApi.retrofitService.getPicture(apiKey)
-            } catch (e: Exception) {
-                println("error: " + e)
-                //_status.value = "Failure: ${e.message}"
-            }
-        }
+    //if I treat this as another function with a viewModelScope.launch{} then the api will not load the data...
+    suspend fun getPictureOfDay() {
+            _pictureOfDay.value = pictureOfDayApi.retrofitService.getPicture(apiKey)
     }
-
-
-    fun getAsteroidDate()
-    {
-        viewModelScope.launch {
-        }
-    }
-
 }
