@@ -44,19 +44,19 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
 
     @RequiresApi(Build.VERSION_CODES.O)
     val current = LocalDateTime.now()
-
+    /*
     @RequiresApi(Build.VERSION_CODES.O)
     fun adjustDate(current : LocalDateTime ): LocalDateTime
     {
         val constantWeek = current.plusDays(7)
         return constantWeek
     }
-    @RequiresApi(Build.VERSION_CODES.O)
+   @RequiresApi(Build.VERSION_CODES.O)
     fun convertStringToLocal(myString: String) : LocalDateTime
     {
         val localLocal = LocalDateTime.parse(myString)
         return localLocal
-    }
+    }*/
 
     @RequiresApi(Build.VERSION_CODES.O)
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -103,7 +103,6 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
     suspend fun refreshAsteroidList() {
         withContext(Dispatchers.IO) {
             //returns a list of Asteroid objects from the network
-            //TODO: Receiving error here
             try {
                 val refreshedAsteroid : List<Asteroid> = parseAsteroidsJsonResult(
                     //we set the interface return type to String that way Retrofit won't demand a converter just yet
@@ -124,7 +123,7 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
                 Log.e("repo","error",e)
                 //e.printStackTrace()
             }
-            //TODO: Save Picture of day into local database
+            //Q: Save Picture of day into local database
         }
     }
 }

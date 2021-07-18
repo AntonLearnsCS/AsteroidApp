@@ -1,14 +1,11 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
-import com.udacity.asteroidradar.api.asDomainModel
 import com.udacity.asteroidradar.api.pictureOfDayApi
 import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.launch
@@ -36,7 +33,7 @@ class MainViewModel (application: Application) : AndroidViewModel(application)
         }
        // pictureOfDay.value?.url?.let { Log.i("viewModel", it) }
     }
-    var menuItemSelected = MutableLiveData("Today")
+    var menuItemSelected = MutableLiveData("Week")
 
 
     var todayDate = AsteroidRepository.formatted
@@ -54,21 +51,24 @@ class MainViewModel (application: Application) : AndroidViewModel(application)
     convertStringToLocal(AsteroidRepository.formatted)).toString())
         .value!!.asDomainModel()*/
 
-    val masterList = MutableLiveData<List<Asteroid>>()
-    var masterMasterList : LiveData<List<Asteroid>> = masterList
+    var _masterList = MutableLiveData<List<Asteroid>>()
+    var masterList : LiveData<List<Asteroid>> = _masterList
 
-    var list : LiveData<List<Asteroid>> = AsteroidRepository.domainAsteroidList
+
+    var weekList : LiveData<List<Asteroid>> = AsteroidRepository.domainAsteroidList
 
     //Q: Should I encapsulate Room data retrieval in viewModelScope?
+
     var domainAsteroidTodayList : LiveData<List<Asteroid>> = AsteroidRepository.domainAsteroidTodayList
 
     var domainAsteroidSavedList : LiveData<List<Asteroid>> = AsteroidRepository.domainAsteroidSavedList
 
-    fun setMasterToSaved(saved : LiveData<List<Asteroid>>)
+
+   /* fun setMasterToSaved(saved : LiveData<List<Asteroid>>)
     {
         domainAsteroidTodayList.value?.get(0)?.closeApproachDate?.let { Log.i("MainViewToday", it) }
-        masterMasterList = saved
-    }
+        _masterList.value = saved.value
+    }*/
 
     fun detailClick(asteroid: Asteroid)
     {

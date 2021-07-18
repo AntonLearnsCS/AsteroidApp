@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
-import com.udacity.asteroidradar.repository.AsteroidRepository
 
 class MainFragment : Fragment() {
 
@@ -35,30 +34,36 @@ class MainFragment : Fragment() {
 
         binding.asteroidRecycler.adapter = adapter
 
+        //TODO: Note that "weekList" and "domainAsteroidSavedList" are the same list, I just haven't adjusted the interface for weekList to get the week's list of Asteroids
         viewModel.menuItemSelected.observe(viewLifecycleOwner, Observer {
-
-            if (it.equals("Today"))
+            //viewModel.masterList = viewModel.list
+            if (it.equals("Week"))
             {
-              viewModel.setMasterToSaved(viewModel.domainAsteroidTodayList)
-                //viewModel.masterList.value = viewModel.domainAsteroidTodayList.value
+                Log.i("MainFragment",viewModel.menuItemSelected.value!!)
+
+                viewModel._masterList.value = viewModel.weekList.value
+
+                viewModel.weekList.value?.get(0)?.closeApproachDate?.let { it1 ->
+                    Log.i("MainFragmen1",
+                        it1
+                    )
+                }
             }
             else if (it.equals("Saved"))
             {
-                //Log.i("MainSavedList",viewModel.domainAsteroidSavedList.value?.size.toString())
-                viewModel.setMasterToSaved(viewModel.domainAsteroidSavedList)
-                //viewModel.masterList.value = viewModel.domainAsteroidSavedList.value
+                viewModel._masterList.value = viewModel.domainAsteroidSavedList.value
             }
             else
-                viewModel.setMasterToSaved(viewModel.list)
-            //viewModel.masterList.value = viewModel.list.value
+                viewModel._masterList.value = viewModel.weekList.value
         })
-        //update the adapter list of asteroids
-        //list is a liveData of List<Asteroid> so we can update the adapter by submitting "list"
 
-        //adapter.submitList(viewModel.list.value)
-        viewModel.masterMasterList.observe(viewLifecycleOwner, Observer {
+        //update the adapter list of asteroids
+        //weekList is a liveData of List<Asteroid> so we can update the adapter by submitting "weekList"
+        //TODO: When observing "weekList", the adapter updates correctly but not for "masterList"
+        viewModel.masterList.observe(viewLifecycleOwner, Observer {
                adapter.submitList(it)
         })
+
         viewModel.detailClick.observe(viewLifecycleOwner, Observer {
             if (it != null)
             {
