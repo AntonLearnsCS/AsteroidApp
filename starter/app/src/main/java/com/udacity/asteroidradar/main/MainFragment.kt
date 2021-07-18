@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
+import com.udacity.asteroidradar.repository.AsteroidRepository
 
 class MainFragment : Fragment() {
 
@@ -34,7 +35,7 @@ class MainFragment : Fragment() {
 
         binding.asteroidRecycler.adapter = adapter
 
-        /*viewModel.menuItemSelected.observe(viewLifecycleOwner, Observer {
+        viewModel.menuItemSelected.observe(viewLifecycleOwner, Observer {
 
             if (it.equals("Today"))
             {
@@ -43,19 +44,19 @@ class MainFragment : Fragment() {
             }
             else if (it.equals("Saved"))
             {
-                Log.i("MainSavedList",viewModel.domainAsteroidSavedList.value?.size.toString())
+                //Log.i("MainSavedList",viewModel.domainAsteroidSavedList.value?.size.toString())
                 viewModel.setMasterToSaved(viewModel.domainAsteroidSavedList)
                 //viewModel.masterList.value = viewModel.domainAsteroidSavedList.value
             }
             else
                 viewModel.setMasterToSaved(viewModel.list)
             //viewModel.masterList.value = viewModel.list.value
-        })*/
+        })
         //update the adapter list of asteroids
         //list is a liveData of List<Asteroid> so we can update the adapter by submitting "list"
 
         //adapter.submitList(viewModel.list.value)
-        viewModel.list.observe(viewLifecycleOwner, Observer {
+        viewModel.masterMasterList.observe(viewLifecycleOwner, Observer {
                adapter.submitList(it)
         })
         viewModel.detailClick.observe(viewLifecycleOwner, Observer {

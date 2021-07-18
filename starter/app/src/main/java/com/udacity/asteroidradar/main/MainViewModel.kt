@@ -2,6 +2,7 @@ package com.udacity.asteroidradar.main
 
 import android.app.Application
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.database.AsteroidDatabase
@@ -27,6 +28,7 @@ class MainViewModel (application: Application) : AndroidViewModel(application)
     private val AsteroidRepository = AsteroidRepository(database)
 
     init {
+
         viewModelScope.launch {
             AsteroidRepository.refreshAsteroidList()
             //Log.i("viewModel repo size: ",AsteroidRepository.domainAsteroidList.value?.size.toString())
@@ -57,13 +59,14 @@ class MainViewModel (application: Application) : AndroidViewModel(application)
 
     var list : LiveData<List<Asteroid>> = AsteroidRepository.domainAsteroidList
 
-    //Q: Should I encapsulate Room data retrieval in viewModelScope ?
-    var domainAsteroidTodayList = AsteroidRepository.domainAsteroidTodayList
+    //Q: Should I encapsulate Room data retrieval in viewModelScope?
+    var domainAsteroidTodayList : LiveData<List<Asteroid>> = AsteroidRepository.domainAsteroidTodayList
 
-    var domainAsteroidSavedList = AsteroidRepository.domainAsteroidSavedList
+    var domainAsteroidSavedList : LiveData<List<Asteroid>> = AsteroidRepository.domainAsteroidSavedList
 
     fun setMasterToSaved(saved : LiveData<List<Asteroid>>)
     {
+        domainAsteroidTodayList.value?.get(0)?.closeApproachDate?.let { Log.i("MainViewToday", it) }
         masterMasterList = saved
     }
 
