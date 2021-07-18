@@ -15,7 +15,6 @@ import com.udacity.asteroidradar.databinding.GridViewItemBinding
 //Recall that ListAdapter utilizes DiffUtil (used to determine difference between two lists) in a background thread
 class AsteroidAdapter(val listener : OnClickListener) : ListAdapter<Asteroid, AsteroidAdapter.AsteroidViewHolder>(DiffCallback) {
 
-    //TODO: Compiler not recognizing GridViewItemBinding implementation
     class AsteroidViewHolder(private var binding: GridViewItemBinding):
         RecyclerView.ViewHolder(binding.root) {
         companion object {

@@ -4,23 +4,16 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
-var test = "%2021-07-15%"
 @Dao
 interface AsteroidDao
 {
     //reference: https://stackoverflow.com/questions/44184769/android-room-select-query-with-like
     //can't insert variable into query parameter, will make 3 seperate mutable live data instead
-    @Query("select * from asteroidEntity where closeApproachDate = '%' || :test || '%'" )
-     fun getToday(test : String) : LiveData<List<asteroidEntity>>
+    // previously '%' || :test || '%'
+    @Query("select * from asteroidEntity where closeApproachDate like :test")
+    fun getToday(test : String) : LiveData<List<asteroidEntity>>
 
-    //@Query("select * from asteroidEntity where closeApproachDate")
-   // @Query("select * from asteroidEntity where")
-    /*
-    @Query("SELECT * FROM countries WHERE id = :arg0")
-fun loadCountry(countryId: Int): LiveData<CountryEntity>
-     */
-
-    @Query("select * from asteroidEntity")
+    @Query("select * from asteroidEntity order by closeApproachDate")
      fun returnAll() : LiveData<List<asteroidEntity>>
 
     //conflicStrategy will ensure that if two entities have the same primary key, we will replace the old entitity
