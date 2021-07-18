@@ -22,6 +22,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.api.*
@@ -40,25 +41,7 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
     /**
      * A list of Asteroids that can be shown on the screen.
      */
-    val domainAsteroidList: LiveData<List<Asteroid>> =
-        Transformations.map(database.asteroidDao.getToday())
-        {
-            it.asDomainModel()
-        }
 
-    /**
-     * Refresh the videos stored in the offline cache.
-     *
-     * This function uses the IO dispatcher to ensure the database insert database operation
-     * happens on the IO dispatcher. By switching to the IO dispatcher using `withContext` this
-     * function is now safe to call from any thread including the Main thread.
-     *
-     * To actually load the videos for use, observe [domainAsteroidList]
-     */
-    enum class AsteroidApiFilter(val value: String) { SHOW_WEEK(""), SHOW_TODAY("buy"), SHOW_SAVED("all")
-    }
-
-    private val apiKey = "RGSQocYE7wIA2WbGRDSi4UnGJ6AgojgzFduwGOCJ"
     @RequiresApi(Build.VERSION_CODES.O)
     val current = LocalDateTime.now()
 
@@ -68,11 +51,51 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
         val constantWeek = current.plusDays(7)
         return constantWeek
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun convertStringToLocal(myString: String) : LocalDateTime
+    {
+        val localLocal = LocalDateTime.parse(myString)
+        return localLocal
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     @RequiresApi(Build.VERSION_CODES.O)
     val formatted = current.format(formatter)
+
+
+    val domainAsteroidList: LiveData<List<Asteroid>> =
+        Transformations.map(database.asteroidDao.returnAll())
+        {
+            it.asDomainModel()
+        }
+
+    var domainAsteroidTodayList: LiveData<List<Asteroid>> =
+        Transformations.map(database.asteroidDao.getToday(formatted))
+        {
+            it.asDomainModel()
+        }
+
+    var domainAsteroidSavedList : LiveData<List<Asteroid>> =
+        Transformations.map(database.asteroidDao.returnAll())
+        {
+            it.asDomainModel()
+        }
+    /**
+     * Refresh the videos stored in the offline cache.
+     *
+     * This function uses the IO dispatcher to ensure the database insert database operation
+     * happens on the IO dispatcher. By switching to the IO dispatcher using `withContext` this
+     * function is now safe to call from any thread including the Main thread.
+     *
+     * To actually load the videos for use, observe [domainAsteroidList]
+     */
+
+
+    private val apiKey = "RGSQocYE7wIA2WbGRDSi4UnGJ6AgojgzFduwGOCJ"
+
+
+
 
     /*Calendar calendar=Calendar.getInstance();
 //rollback 90 days
@@ -92,7 +115,7 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
                     ))
                 )
                 database.asteroidDao.insertAll(*refreshedAsteroid.asDatabaseModel())
-                Log.i("repo size:", database.asteroidDao.returnAll().value?.size.toString())
+                //Log.i("repo size:", database.asteroidDao.returnAll().value?.size.toString())
                 val refreshedPictureOfDay = pictureOfDayApi.retrofitService.getPicture(apiKey)
             }
             catch (e : Exception)

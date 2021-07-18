@@ -55,6 +55,7 @@ import retrofit2.http.Query
         @GET("feed")
         suspend fun getProperties(@Query("start_date") start_date: String?,
                                   @Query("api_key") api_key: String): String
+    //    suspend fun getProperties(@Query("filter") type: String): List<MarsProperty>
         //we set the interface return type to String that way Retrofit won't demand a converter just yet
         //we can then convert the String result to a JSONObject using the syntax below
         //note, when requesting a JSON response, we can specify the JSON response to be of type: JsonArray, JsonObject,

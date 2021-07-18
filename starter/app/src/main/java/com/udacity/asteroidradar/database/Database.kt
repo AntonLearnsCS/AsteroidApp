@@ -9,21 +9,23 @@ var test = "%2021-07-15%"
 interface AsteroidDao
 {
     //reference: https://stackoverflow.com/questions/44184769/android-room-select-query-with-like
-    @Query("select * from asteroidEntity where closeApproachDate = '%' || :test || '%'")
-    fun getToday(test : String) : LiveData<List<asteroidEntity>>
+    //can't insert variable into query parameter, will make 3 seperate mutable live data instead
+    @Query("select * from asteroidEntity where closeApproachDate = '%' || :test || '%'" )
+     fun getToday(test : String) : LiveData<List<asteroidEntity>>
 
-
+    //@Query("select * from asteroidEntity where closeApproachDate")
+   // @Query("select * from asteroidEntity where")
     /*
     @Query("SELECT * FROM countries WHERE id = :arg0")
 fun loadCountry(countryId: Int): LiveData<CountryEntity>
      */
 
     @Query("select * from asteroidEntity")
-    fun returnAll() : LiveData<List<asteroidEntity>>
+     fun returnAll() : LiveData<List<asteroidEntity>>
 
     //conflicStrategy will ensure that if two entities have the same primary key, we will replace the old entitity
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg asteroid: asteroidEntity)
+     fun insertAll(vararg asteroid: asteroidEntity)
 }
 //recall that the order of the variables do not have to match the order by which the properties appear on the JSON array
 //but they do need to match the name of the properties listed on the JSON array
