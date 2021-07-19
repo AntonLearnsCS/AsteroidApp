@@ -2,6 +2,8 @@ package com.udacity.asteroidradar.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
@@ -65,12 +67,4 @@ class AsteroidAdapter(val listener : OnClickListener) : ListAdapter<Asteroid, As
     class OnClickListener(val listener : (asteroid : Asteroid) -> Unit) {
         fun onClick(asteroid : Asteroid) = listener(asteroid)
     }
-
-
-    /*
-        class OnClickListener(val clickListener: (marsProperty:MarsProperty) -> Unit) {
-        fun onClick(marsProperty:MarsProperty) = clickListener(marsProperty)
-    }
-     */
-
 }

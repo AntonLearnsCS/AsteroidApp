@@ -26,6 +26,7 @@ A: RecyclerView will adjust based on space available
             statusAdapter="@{asteroid.potentiallyHazardous}"
             android:layout_width="58dp"
             android:layout_height="45dp"
+            android:contentDescription="@{asteroid.potentiallyHazardous ? @string/red_face : @string/neutral_face}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/asteroid_name"
             tools:srcCompat="@tools:sample/avatars" />

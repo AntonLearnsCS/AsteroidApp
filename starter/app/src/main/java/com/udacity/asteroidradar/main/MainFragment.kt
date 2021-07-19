@@ -3,13 +3,17 @@ package com.udacity.asteroidradar.main
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
+import com.udacity.asteroidradar.repository.AsteroidRepository
+import kotlinx.coroutines.launch
 
 class MainFragment : Fragment() {
 
@@ -24,9 +28,26 @@ class MainFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-
+        (activity as AppCompatActivity).supportActionBar?.title = "Asteroid Radar"
 
         setHasOptionsMenu(true)
+        /*  var swipeRefreshLayout = binding.swipeRefresh
+
+        fun mainRefreshFun()
+        {
+            if (swipeRefreshLayout.isRefreshing)
+            {
+                swipeRefreshLayout.isRefreshing = false
+            }
+            viewModel.refreshFun()
+        }
+
+        swipeRefreshLayout.setOnRefreshListener {
+        mainRefreshFun()
+        }
+
+       */
+
 
         //defines AsteroidAdapter for the xml as well as setting detailClick to the choosen asteroid
         val adapter = AsteroidAdapter(AsteroidAdapter.OnClickListener
@@ -37,50 +58,47 @@ class MainFragment : Fragment() {
 
         binding.asteroidRecycler.adapter = adapter
 
-        //TODO: Note that "weekList" and "domainAsteroidSavedList" are the same list, I just haven't adjusted the interface for weekList to get the week's list of Asteroids
+        //TODO: How can I improve this filter, as it seems convoluted to have three seperate obervers for each list
         viewModel.menuItemSelected.observe(viewLifecycleOwner, Observer {
             //viewModel.masterList = viewModel.list
-            if (it.equals("Week"))
+            if (it == "Week")
             {
                 //Log.i("MainFragment",viewModel.weekList.toString())
+                //viewModel._masterList.value = viewModel.weekList.value
+                viewModel.weekList.observe(viewLifecycleOwner, Observer {
+                    viewModel._masterList.value = it
+                })
 
-                viewModel._masterList.value = viewModel.weekList.value
-
-                viewModel.weekList.value?.get(0)?.closeApproachDate?.let { it1 ->
-                    Log.i("MainFragmen1",
-                        it1
-                    )
-                }
             }
             //Note: You can't set a LiveData to a MutableLiveData, encapsulation only lets you set a
             else if (it.equals("Saved"))
             {
-                viewModel._masterList.value = viewModel.domainAsteroidSavedList.value
+                viewModel.domainAsteroidSavedList.observe(viewLifecycleOwner, Observer {
+                    viewModel._masterList.value = it
+                })
+                //viewModel._masterList.value = viewModel.domainAsteroidSavedList.value
             }
             else
-                viewModel._masterList.value = viewModel.weekList.value
+            {
+                viewModel.domainAsteroidTodayList.observe(viewLifecycleOwner, Observer {
+                    viewModel._masterList.value = it
+                })
+            }
         })
-
-        //update the adapter list of asteroids
-        //weekList is a liveData of List<Asteroid> so we can update the adapter by submitting "weekList"
-        //TODO: When observing "weekList", the adapter updates correctly but not for "masterList"
-        viewModel.weekList.observe(viewLifecycleOwner, Observer {
-               adapter.submitList(it)
+        //TODO: If I set _masterList.value = weekList.value or any other list and then observe masterList below, I get a blank
+        //TODO:recycler, why is that? Why do I need to observe each list for masterList to recognize that _masterList has a value?
+        viewModel.masterList.observe(viewLifecycleOwner, Observer {
+            adapter.submitList(it)
         })
 
         viewModel.detailClick.observe(viewLifecycleOwner, Observer {
             if (it != null)
             {
-                viewModel.detailClick.value?.closeApproachDate?.let { it1 ->
-                    Log.i("MainTest",
-                        it1
-                    )
-                }
                 //pass in the Asteroid object to safeArgs to be viewed in the detailFragment
                this.findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
+                viewModel.completeClick()
             }
         })
-
         return binding.root
     }
 
@@ -99,4 +117,3 @@ class MainFragment : Fragment() {
         return true
     }
 }
-

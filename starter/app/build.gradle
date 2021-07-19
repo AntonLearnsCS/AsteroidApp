@@ -32,7 +32,43 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
-}
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude "META-INF/AL2.0"
+        exclude("META-INF/*.kotlin_module")
+        exclude("META-INF/LGPL2.1")
+    }
+
+
+    configurations.all {
+        resolutionStrategy.dependencySubstitution {
+            //recall that hamcrest is similar to junit but it is more human readable with statements like "assertThat" and "`is`" so there
+            //is bound to be overlap between the two library so we include the statement below if there are any conflict
+            substitute module('org.hamcrest:hamcrest-all:1.3') with module('junit:junit:4.12') }
+        //source: https://stackoverflow.com/questions/59085448/duplicate-class-org-hamcrest-basedescription-found-in-modules-jetified-hamcrest
+        }
+
+    /*resolutionStrategy {
+        //force 'org.hamcrest:hamcrest-junit:1.3'
+        force 'org.hamcrest:hamcrest-junit:1.3'
+
+        exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
+    }*/
+        /*resolutionStrategy {
+            force 'org.hamcrest:hamcrest-junit:1.3'
+
+            exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
+
+        }*/
+    }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -63,12 +99,40 @@ dependencies {
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
+    implementation "androidx.room:room-ktx:2.3.0"
     implementation "androidx.room:room-runtime:2.2.5"
     kapt "androidx.room:room-compiler:2.2.5"
 
     implementation "android.arch.work:work-runtime-ktx:1.0.1"
 
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    testImplementation 'junit:junit:4.12'
+
+    //AndroidTest
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation "junit:junit:4.12"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.7"
+    androidTestImplementation "org.hamcrest:hamcrest-all:1.3"
+
+
+    // AndroidX Test - JVM testing
+    androidTestImplementation "androidx.test:core-ktx:1.4.0"
+    androidTestImplementation "org.robolectric:robolectric:4.5.1"
+    androidTestImplementation "androidx.test.ext:junit-ktx:1.1.3"
+
+
+    //testing
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    // AndroidX Test - JVM testing
+    testImplementation "androidx.test:core-ktx:1.4.0"
+    testImplementation "org.robolectric:robolectric:4.5.1"
+
+    testImplementation "androidx.test:core-ktx:1.4.0"
+    testImplementation "androidx.test.ext:junit-ktx:1.1.3"
+
+    //LiveDataTesting
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
 }

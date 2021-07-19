@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.database
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.udacity.asteroidradar.Asteroid
 
 @Dao
 interface AsteroidDao
@@ -19,6 +20,9 @@ interface AsteroidDao
     //conflicStrategy will ensure that if two entities have the same primary key, we will replace the old entitity
     @Insert(onConflict = OnConflictStrategy.REPLACE)
      fun insertAll(vararg asteroid: asteroidEntity)
+
+    @Query("SELECT * FROM asteroidEntity WHERE id = :Id")
+    suspend fun getTaskById(Id: Long): Asteroid?
 }
 //recall that the order of the variables do not have to match the order by which the properties appear on the JSON array
 //but they do need to match the name of the properties listed on the JSON array
@@ -30,6 +34,7 @@ data class asteroidEntity(
                           val absoluteMagnitude: Double, val estimatedDiameter: Double,
                           val relativeVelocity: Double, val distanceFromEarth: Double,
                           val isPotentiallyHazardous: Boolean)
+
 
 //create an instance of a Room database
 
