@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -23,6 +24,8 @@ class MainFragment : Fragment() {
 
         binding.viewModel = viewModel
 
+
+
         setHasOptionsMenu(true)
 
         //defines AsteroidAdapter for the xml as well as setting detailClick to the choosen asteroid
@@ -39,7 +42,7 @@ class MainFragment : Fragment() {
             //viewModel.masterList = viewModel.list
             if (it.equals("Week"))
             {
-                Log.i("MainFragment",viewModel.menuItemSelected.value!!)
+                //Log.i("MainFragment",viewModel.weekList.toString())
 
                 viewModel._masterList.value = viewModel.weekList.value
 
@@ -49,6 +52,7 @@ class MainFragment : Fragment() {
                     )
                 }
             }
+            //Note: You can't set a LiveData to a MutableLiveData, encapsulation only lets you set a
             else if (it.equals("Saved"))
             {
                 viewModel._masterList.value = viewModel.domainAsteroidSavedList.value
@@ -60,13 +64,18 @@ class MainFragment : Fragment() {
         //update the adapter list of asteroids
         //weekList is a liveData of List<Asteroid> so we can update the adapter by submitting "weekList"
         //TODO: When observing "weekList", the adapter updates correctly but not for "masterList"
-        viewModel.masterList.observe(viewLifecycleOwner, Observer {
+        viewModel.weekList.observe(viewLifecycleOwner, Observer {
                adapter.submitList(it)
         })
 
         viewModel.detailClick.observe(viewLifecycleOwner, Observer {
             if (it != null)
             {
+                viewModel.detailClick.value?.closeApproachDate?.let { it1 ->
+                    Log.i("MainTest",
+                        it1
+                    )
+                }
                 //pass in the Asteroid object to safeArgs to be viewed in the detailFragment
                this.findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
             }

@@ -29,6 +29,7 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 picassoAdapter="@{viewModel.pictureOfDay}"
+                android:contentDescription="@{viewModel.pictureOfDay.title}"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/placeholder_picture_of_day" />
 
@@ -42,7 +43,8 @@
                 android:layout_gravity="bottom"
                 android:background="#55010613"
                 android:padding="16dp"
-                android:text="@string/today_asteroids"
+                android:contentDescription="@{viewModel.textDescription}"
+                android:text="@{viewModel.textDescription}"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />

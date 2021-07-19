@@ -59,10 +59,9 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
     }*/
 
     @RequiresApi(Build.VERSION_CODES.O)
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd") //should return 2021-Jul-19
     @RequiresApi(Build.VERSION_CODES.O)
     val formatted = current.format(formatter)
-
 
     val domainAsteroidList: LiveData<List<Asteroid>> =
         Transformations.map(database.asteroidDao.returnAll())
@@ -119,7 +118,6 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
             }
             catch (e : Exception)
             {
-                Log.i("repo","errorRepo")
                 Log.e("repo","error",e)
                 //e.printStackTrace()
             }

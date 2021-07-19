@@ -12,8 +12,6 @@ import kotlinx.coroutines.launch
 
 class MainViewModel (application: Application) : AndroidViewModel(application)
 {
-    enum class AsteroidApiFilter(val value: String) { SHOW_WEEK(""), SHOW_TODAY("buy"), SHOW_SAVED("all")
-    }
 /*
     private val database = VideosDatabase.getDatabase(application)
     private val videosRepository = VideosRepository(database)
@@ -35,6 +33,7 @@ class MainViewModel (application: Application) : AndroidViewModel(application)
     }
     var menuItemSelected = MutableLiveData("Week")
 
+    var textDescription = "List of " + menuItemSelected.value + " Asteroid"
 
     var todayDate = AsteroidRepository.formatted
 
@@ -57,7 +56,7 @@ class MainViewModel (application: Application) : AndroidViewModel(application)
 
     var weekList : LiveData<List<Asteroid>> = AsteroidRepository.domainAsteroidList
 
-    //Q: Should I encapsulate Room data retrieval in viewModelScope?
+    //Self note: Should I encapsulate Room data retrieval in viewModelScope?
 
     var domainAsteroidTodayList : LiveData<List<Asteroid>> = AsteroidRepository.domainAsteroidTodayList
 
