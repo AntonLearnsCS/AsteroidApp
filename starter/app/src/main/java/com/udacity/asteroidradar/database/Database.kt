@@ -31,6 +31,7 @@ data class asteroidEntity(
                           val relativeVelocity: Double, val distanceFromEarth: Double,
                           val isPotentiallyHazardous: Boolean)
 
+
 //create an instance of a Room database
 
 @Database(entities = [asteroidEntity::class], version = 1)

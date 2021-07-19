@@ -79,6 +79,12 @@ class MainViewModel (application: Application) : AndroidViewModel(application)
     }
     //if I treat this as another function with a viewModelScope.launch{} then the api will not load the data...
     suspend fun getPictureOfDay() {
+        try {
             _pictureOfDay.value = pictureOfDayApi.retrofitService.getPicture(apiKey)
+        }
+        catch (e : Exception)
+        {
+            Log.i("Main Exception: ", e.toString())
+        }
     }
 }
