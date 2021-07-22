@@ -80,12 +80,6 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
 
     private val apiKey = "RGSQocYE7wIA2WbGRDSi4UnGJ6AgojgzFduwGOCJ"
 
-
-
-
-    /*Calendar calendar=Calendar.getInstance();
-//rollback 90 days
-    calendar.add(Calendar.DAY_OF_YEAR, -90);*/
     suspend fun refreshAsteroidList() {
         withContext(Dispatchers.IO) {
             //returns a list of Asteroid objects from the network

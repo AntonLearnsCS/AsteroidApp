@@ -68,7 +68,8 @@ class MainFragment : Fragment() {
                 })
             }
         })
-
+        //TODO: If I set _masterList.value = weekList.value or any other list and then observe masterList below, I get a blank
+        //TODO:recycler, why is that? Why do I need to observe each list for masterList to recognize that _masterList has a value?
         viewModel.masterList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
