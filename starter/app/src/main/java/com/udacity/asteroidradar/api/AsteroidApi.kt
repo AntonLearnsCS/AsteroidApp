@@ -32,7 +32,6 @@ import retrofit2.http.Query
     // the specified data type
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(ScalarsConverterFactory.create())
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addCallAdapterFactory(CoroutineCallAdapterFactory()) //allows us to replace the callback methods for Retrofit with coroutine
         .baseUrl(BASE_URL)
         .build()

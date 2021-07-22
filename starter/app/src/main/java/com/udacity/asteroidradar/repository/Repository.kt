@@ -44,19 +44,6 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
 
     @RequiresApi(Build.VERSION_CODES.O)
     val current = LocalDateTime.now()
-    /*
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun adjustDate(current : LocalDateTime ): LocalDateTime
-    {
-        val constantWeek = current.plusDays(7)
-        return constantWeek
-    }
-   @RequiresApi(Build.VERSION_CODES.O)
-    fun convertStringToLocal(myString: String) : LocalDateTime
-    {
-        val localLocal = LocalDateTime.parse(myString)
-        return localLocal
-    }*/
 
     @RequiresApi(Build.VERSION_CODES.O)
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd") //should return 2021-Jul-19
@@ -114,12 +101,11 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
                 )
                 database.asteroidDao.insertAll(*refreshedAsteroid.asDatabaseModel())
                 //Log.i("repo size:", database.asteroidDao.returnAll().value?.size.toString())
-                val refreshedPictureOfDay = pictureOfDayApi.retrofitService.getPicture(apiKey)
+                //val refreshedPictureOfDay = pictureOfDayApi.retrofitService.getPicture(apiKey)
             }
             catch (e : Exception)
             {
                 Log.e("repo","error",e)
-                //e.printStackTrace()
             }
             //Q: Save Picture of day into local database
         }
