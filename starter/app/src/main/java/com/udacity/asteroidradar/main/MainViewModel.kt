@@ -30,8 +30,6 @@ class MainViewModel (application: Application) : AndroidViewModel(application)
     }
     var menuItemSelected = MutableLiveData("Week")
 
-    var textDescription = "List of " + menuItemSelected.value + " Asteroid"
-
 
     private val _detailClick = MutableLiveData<Asteroid>() //will set MutableLiveData to null
     val detailClick : LiveData<Asteroid>
