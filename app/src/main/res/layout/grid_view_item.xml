@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="asteroid"
+            type="com.udacity.asteroidradar.Asteroid" />
+        <variable
+            name="onClickListener"
+            type="com.udacity.asteroidradar.main.AsteroidAdapter.OnClickListener" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!-- Q: Why is width "match parent?"
+A: RecyclerView will adjust based on space available
+
+  android:onClick="@{()->viewModel.onClick(asteroid)}"
+
+-->
+        <ImageView
+            android:id="@+id/imageView"
+            statusAdapter="@{asteroid.potentiallyHazardous}"
+            android:layout_width="58dp"
+            android:layout_height="45dp"
+            android:contentDescription="@{asteroid.potentiallyHazardous ? @string/red_face : @string/neutral_face}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/asteroid_name"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/asteroid_name"
+            style="@style/grid_style"
+            android:text="@{String.valueOf(asteroid.codename)}"
+            app:layout_constraintBottom_toTopOf="@+id/nearby_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <!-- -->
+        <TextView
+            android:id="@+id/nearby_date"
+            style="@style/grid_style"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:text="@{String.valueOf(asteroid.closeApproachDate)}"
+            android:textColor="@color/cardview_light_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/asteroid_name" />
+        <!-- -->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
