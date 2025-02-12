@@ -2,6 +2,12 @@ package com.udacity.asteroidradar.main
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.Asteroid
@@ -34,7 +40,7 @@ class MainViewModel (application: Application) : AndroidViewModel(application)
             AsteroidRepository.refreshAsteroidList()
         }
     }*/
-    var menuItemSelected = MutableLiveData("Week")
+    var menuItemSelected = MutableLiveData("Weekly")
 
     private val _detailClick = MutableLiveData<Asteroid>() //will set MutableLiveData to null
     val detailClick : LiveData<Asteroid>
@@ -47,6 +53,7 @@ class MainViewModel (application: Application) : AndroidViewModel(application)
     val _masterList = MutableLiveData<List<Asteroid>>()
     val masterList : LiveData<List<Asteroid>>
     get() = _masterList
+
 
     var weekList : LiveData<List<Asteroid>> = AsteroidRepository.domainAsteroidList
 
