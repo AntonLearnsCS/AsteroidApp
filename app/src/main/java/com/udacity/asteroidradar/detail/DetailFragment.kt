@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.copyovertest.R
-import com.example.copyovertest.databinding.FragmentDetailBinding
+import com.example.asteroidComposed.R
+import com.example.asteroidComposed.databinding.FragmentDetailBinding
 
 class DetailFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

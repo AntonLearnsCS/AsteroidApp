@@ -3,11 +3,8 @@ package com.udacity.asteroidradar
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.example.copyovertest.R
+import com.example.asteroidComposed.R
 import com.squareup.picasso.Picasso
-import com.udacity.asteroidradar.main.AsteroidAdapter
-import okhttp3.MediaType
 
 @BindingAdapter("statusAdapter")
 fun statusAdapter(imageView: ImageView, isHazardous : Boolean)

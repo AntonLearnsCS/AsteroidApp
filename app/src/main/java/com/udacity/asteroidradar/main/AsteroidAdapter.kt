@@ -9,8 +9,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.copyovertest.R
-import com.example.copyovertest.databinding.GridViewItemBinding
+import com.example.asteroidComposed.R
+import com.example.asteroidComposed.databinding.GridViewItemBinding
 import com.udacity.asteroidradar.Asteroid
 
 //You must specify DiffCallBack when extending ListAdapter, DiffCallBack is a callback on each item in the viewHolder

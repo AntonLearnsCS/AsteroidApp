@@ -1,8 +1,5 @@
 package com.udacity.asteroidradar
 
-/*import androidx.navigation.NavType
-import androidx.navigation.navArgument*/
-
 object AsteroidOverviewScreen: AsteroidDestinations{
     override val route = "Overview"
 

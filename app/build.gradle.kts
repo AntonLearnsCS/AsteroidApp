@@ -12,11 +12,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.copyovertest"
+    namespace = "com.example.asteroidComposed"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.copyovertest"
+        applicationId = "com.example.asteroidComposed"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

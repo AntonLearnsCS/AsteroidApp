@@ -10,9 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
-import com.example.copyovertest.R
+import com.example.asteroidComposed.R
 import androidx.databinding.DataBindingUtil
-import com.example.copyovertest.databinding.FragmentMainBinding
+import com.example.asteroidComposed.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.launch
 

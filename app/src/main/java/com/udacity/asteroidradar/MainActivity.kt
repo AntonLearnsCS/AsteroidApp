@@ -15,7 +15,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.example.copyovertest.R
+import com.example.asteroidComposed.R
 import com.udacity.asteroidradar.main.HomeScreen
 import com.udacity.asteroidradar.main.MainViewModel
 

@@ -1,13 +1,5 @@
 package com.udacity.asteroidradar.main
 
-// for a 'val' variable
-
-// for a `var` variable also add
-
-// or just
-//import coil3.ImageLoader
-//import coil.ImageLoader
-//import coil.compose.AsyncImage
 import android.app.Application
 import android.util.Log
 import android.widget.Toast
@@ -21,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -59,15 +50,12 @@ import coil3.ImageLoader
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.util.DebugLogger
-import com.example.copyovertest.R
+import com.example.asteroidComposed.R
 import com.udacity.asteroidradar.Asteroid
-import com.udacity.asteroidradar.AsteroidDestinations
 import com.udacity.asteroidradar.AsteroidDetailScreen
 import com.udacity.asteroidradar.AsteroidOverviewScreen
 import com.udacity.asteroidradar.MenuItem
 import com.udacity.asteroidradar.detail.AsteroidDetailComposed
-import java.util.logging.Level
-import java.util.logging.Logger
 
 @Composable
 fun AsteroidNavHost(navHostController: NavHostController, asteroidList: State<List<Asteroid>?>, padding: PaddingValues,
@@ -167,7 +155,7 @@ fun HomeScreen(mainViewModel: MainViewModel) {
 
 
 
-    //unable to use Toast without context
+//unable to use Toast without context
     @Composable
     fun ShowToast(messageToDisplay: String) {
         Toast.makeText(LocalContext.current, messageToDisplay, Toast.LENGTH_SHORT).show()
@@ -253,8 +241,6 @@ fun ImageView.loadVideoUrl(url: String) = this.apply {
     scaleType = ImageView.ScaleType.CENTER_CROP
 }
 
-
- //TODO:
  //attempted to get video thumbnail using okhttp but kept running into error: "setDataSource failed: status = 0x80000000", followed recommendation
  //on coil documentation. Maybe try upgrading the version of coil-video dependency but that would need API 35, which would require an update of other
  //dependencies. Will have to try that in the future. So for now we are not able to get the picture of the day if the url points to a video and not
@@ -297,10 +283,5 @@ AndroidView(
                             } }
                         }
                     )
-
-
-
-
-
  */
 

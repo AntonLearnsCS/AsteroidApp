@@ -2,20 +2,15 @@ package com.udacity.asteroidradar.main
 
 import android.app.Application
 import android.util.Log
-import androidx.compose.material3.rememberTooltipState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
-import androidx.lifecycle.*
-import androidx.lifecycle.viewmodel.compose.saveable
-import androidx.navigation.toRoute
-import com.udacity.asteroidradar.database.AsteroidDatabase
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.pictureOfDayApi
+import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.launch
 
@@ -45,22 +40,6 @@ class MainViewModel (application: Application, private val savedStateHandle: Sav
     }*/
     var menuItemSelected = MutableLiveData("Weekly")
 
-    //private val showPod = MutableLiveData<Boolean>(savedStateHandle.get<Boolean>())
-
-
-     var showPod : MutableLiveData<Boolean>?
-        set(value) {
-            if (value == null){
-                savedStateHandle["showPod"] = true
-            }
-            else {
-                savedStateHandle["showPod"] = value.value
-            }
-        }
-        get() {
-            return savedStateHandle.getLiveData<Boolean>("showPod")
-        }
-
     var detailClick : MutableLiveData<Asteroid>
         set(value) {
             if (value == null){
@@ -88,10 +67,6 @@ class MainViewModel (application: Application, private val savedStateHandle: Sav
     var domainAsteroidTodayList : LiveData<List<Asteroid>> = AsteroidRepository.domainAsteroidTodayList
 
     var domainAsteroidSavedList : LiveData<List<Asteroid>> = AsteroidRepository.domainAsteroidSavedList
-
-    fun changeShowPod(boolean: Boolean){
-        showPod?.value = boolean
-    }
 
     fun detailClick(asteroid: Asteroid)
     {

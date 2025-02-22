@@ -17,10 +17,9 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { setUrl("https://jitpack.io") }
-        jcenter()
     }
 }
 
-rootProject.name = "CopyOverTest"
+rootProject.name = "AsteroidComposed"
 include(":app")
  
