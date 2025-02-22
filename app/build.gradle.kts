@@ -5,6 +5,9 @@ plugins {
     id("kotlin-parcelize")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs")
+    id ("kotlinx-serialization")
+   id ("org.jetbrains.kotlin.plugin.serialization")
+
 
 }
 
@@ -80,7 +83,22 @@ dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.ui.tooling.preview.android)
     implementation(libs.androidx.navigation.compose)
+    /*
+    not sure why Coil wasn't able to load images since I was using coil and not coil3, which
+    was where the creator said the issue was. Will try coil3-okHttp attachment to load images
+    instead
+    */
+
+    implementation("io.coil-kt.coil3:coil-video:3.0.0")
+    implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation("io.coil-kt:coil-video:2.4.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.0")
+    implementation("io.coil-kt.coil3:coil-compose:3.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
     debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation("androidx.compose.ui:ui-tooling")
+
     kapt (libs.room.compiler)
 
     //implementation (libs.androidx.ui.tooling)

@@ -2,6 +2,7 @@ package com.udacity.asteroidradar.main
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,6 +10,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.*
+import androidx.lifecycle.viewmodel.compose.saveable
+import androidx.navigation.toRoute
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
@@ -16,7 +19,7 @@ import com.udacity.asteroidradar.api.pictureOfDayApi
 import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.launch
 
-class MainViewModel (application: Application) : AndroidViewModel(application)
+class MainViewModel (application: Application, private val savedStateHandle: SavedStateHandle) : AndroidViewModel(application)
 {
 /*
     private val database = VideosDatabase.getDatabase(application)
@@ -42,9 +45,34 @@ class MainViewModel (application: Application) : AndroidViewModel(application)
     }*/
     var menuItemSelected = MutableLiveData("Weekly")
 
-    private val _detailClick = MutableLiveData<Asteroid>() //will set MutableLiveData to null
-    val detailClick : LiveData<Asteroid>
-    get() = _detailClick
+    //private val showPod = MutableLiveData<Boolean>(savedStateHandle.get<Boolean>())
+
+
+     var showPod : MutableLiveData<Boolean>?
+        set(value) {
+            if (value == null){
+                savedStateHandle["showPod"] = true
+            }
+            else {
+                savedStateHandle["showPod"] = value.value
+            }
+        }
+        get() {
+            return savedStateHandle.getLiveData<Boolean>("showPod")
+        }
+
+    var detailClick : MutableLiveData<Asteroid>
+        set(value) {
+            if (value == null){
+                savedStateHandle["detailClick"] = Asteroid()
+            }
+            else {
+                savedStateHandle["detailClick"] = value.value?.id
+            }
+        }
+    get() {
+        return (savedStateHandle.getLiveData<Asteroid>("detailClick"))
+    }
 
     private val _pictureOfDay = MutableLiveData<PictureOfDay>() //will set MutableLiveData to null
     val pictureOfDay : LiveData<PictureOfDay>
@@ -61,14 +89,17 @@ class MainViewModel (application: Application) : AndroidViewModel(application)
 
     var domainAsteroidSavedList : LiveData<List<Asteroid>> = AsteroidRepository.domainAsteroidSavedList
 
+    fun changeShowPod(boolean: Boolean){
+        showPod?.value = boolean
+    }
 
     fun detailClick(asteroid: Asteroid)
     {
-        _detailClick.value = asteroid
+       detailClick.value = asteroid
     }
     fun completeClick()
     {
-        _detailClick.value = null
+        detailClick.value = null
     }
     //if I treat this as another function with a viewModelScope.launch{} then the api will not load the data...
     suspend fun getPictureOfDay() {

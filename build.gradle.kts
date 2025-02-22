@@ -6,6 +6,8 @@ buildscript {
         classpath ("com.android.tools.build:gradle:${libs.versions.gradle}")
         classpath ("org.jetbrains.kotlin:kotlin-gradle-plugin:${libs.versions.kotlin}")
         classpath (libs.navigation.safe.args.gradle.plugin)
+        classpath ("org.jetbrains.kotlin:kotlin-serialization:1.8.20")
+
     }
 }
 
@@ -14,5 +16,5 @@ buildscript {
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
-
+    id ("org.jetbrains.kotlin.plugin.serialization") version "1.8.20" apply false
 }

@@ -24,4 +24,5 @@
     <string name="close_approach_date">Close approach date</string>
     <string name="absolute_magnitude">Absolute Magnitude</string>
     <string name="estimated_diameter">Estimated Diameter</string>
+    <string name="absolute_magnitude_info">Absolute magnitude is a measurement of how bright a celestial object is, such as a star or planet</string>
 </resources>

@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         setContent{
             MaterialTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    val viewModel = MainViewModel(application)
+                    val viewModel = MainViewModel(application, SavedStateHandle())
                     //will return the local viewModel that we have created. Not sure how it is known what viewModel is to be selected
                     HomeScreen( mainViewModel = viewModel)
                 }
