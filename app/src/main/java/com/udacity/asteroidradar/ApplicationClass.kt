@@ -4,12 +4,14 @@ import android.app.Application
 import android.os.Build
 import androidx.work.*
 import com.udacity.asteroidradar.repository.RefreshDataWorker
+import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
+@HiltAndroidApp
 class ApplicationClass : Application()
 {
     //this coroutineScope is a lifecycle coroutine whose lifetime is dependent on the Main Activity as referenced by Dispatchers.Default

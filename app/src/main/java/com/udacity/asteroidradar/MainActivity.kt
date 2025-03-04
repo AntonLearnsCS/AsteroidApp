@@ -1,6 +1,8 @@
 package com.udacity.asteroidradar
 
+import android.app.Application
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.findNavController
@@ -18,17 +21,19 @@ import androidx.navigation.ui.NavigationUI
 import com.example.asteroidComposed.R
 import com.udacity.asteroidradar.main.HomeScreen
 import com.udacity.asteroidradar.main.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent{
             MaterialTheme {
+                val test = 0
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    val viewModel = MainViewModel(application, SavedStateHandle())
-                    //will return the local viewModel that we have created. Not sure how it is known what viewModel is to be selected
-                    HomeScreen( mainViewModel = viewModel)
+                    val viewModel = hiltViewModel<MainViewModel>()
+                    HomeScreen(mainViewModel = viewModel)
                 }
             }
         }

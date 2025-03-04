@@ -5,6 +5,8 @@ androidxWorkRuntime = "2.8.0"
 compiler = "1.5.14"
 converterMoshi = "2.11.0"
 converterScalars = "2.9.0"
+hiltAndroid = "2.52"
+hiltNavigationCompose = "1.2.0"
 kotlin = "1.9.24"
 androidExtension = "2.0.0"
 coreKtx = "1.13.1"
@@ -37,6 +39,8 @@ navigationCompose = "2.8.6"
 [libraries]
 androidx-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compiler" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+androidx-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltNavigationCompose" }
 androidx-multidex = { module = "androidx.multidex:multidex", version.ref = "dex" }
 
 #androidx-ui-tooling = { module = "androidx.ui:ui-tooling", version.ref = "uiTooling" }
@@ -45,6 +49,7 @@ androidx-ui = { module = "androidx.compose.ui:ui", version.ref = "uiVersion" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "androidxWorkRuntime" }
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converterMoshi" }
 converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "converterScalars" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

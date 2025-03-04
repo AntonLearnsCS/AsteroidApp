@@ -7,7 +7,7 @@ plugins {
     id("androidx.navigation.safeargs")
     id ("kotlinx-serialization")
    id ("org.jetbrains.kotlin.plugin.serialization")
-
+    id("dagger.hilt.android.plugin")
 
 }
 
@@ -95,6 +95,13 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.0")
     implementation("io.coil-kt.coil3:coil-compose:3.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    implementation(libs.hilt.android)
+    kapt("com.google.dagger:hilt-android-compiler:2.52")
+    implementation(libs.androidx.hilt.work)
+    kapt("androidx.hilt:hilt-compiler:1.2.0")
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation("androidx.compose.ui:ui-tooling")

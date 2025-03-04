@@ -28,6 +28,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -41,6 +42,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -51,15 +53,19 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.util.DebugLogger
 import com.example.asteroidComposed.R
+import com.udacity.asteroidradar.ApplicationClass
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.AsteroidDetailScreen
 import com.udacity.asteroidradar.AsteroidOverviewScreen
 import com.udacity.asteroidradar.MenuItem
 import com.udacity.asteroidradar.detail.AsteroidDetailComposed
+import java.util.Timer
+import kotlin.concurrent.scheduleAtFixedRate
 
 @Composable
 fun AsteroidNavHost(navHostController: NavHostController, asteroidList: State<List<Asteroid>?>, padding: PaddingValues,
     mainViewModel: MainViewModel) {
+    Log.v("viewModel", mainViewModel.hashCode().toString())
     NavHost(
         navController = navHostController, startDestination = AsteroidOverviewScreen.route,
         modifier = Modifier.fillMaxWidth().padding(padding)
@@ -76,6 +82,7 @@ fun AsteroidNavHost(navHostController: NavHostController, asteroidList: State<Li
                 //AsteroidDetailScreen arguments parameter
                 mainViewModel.detailClick.value = asteroid
                 navHostController.navigate(AsteroidDetailScreen.route)
+
             }
         }
         composable(route = AsteroidDetailScreen.route) {
@@ -94,9 +101,10 @@ fun AsteroidNavHost(navHostController: NavHostController, asteroidList: State<Li
 fun HomeScreen(mainViewModel: MainViewModel) {
     MaterialTheme {
         Scaffold { padding ->
-
+            Log.v("viewModel", mainViewModel.hashCode().toString())
             var expanded by rememberSaveable { mutableStateOf(false) }
             val navController = rememberNavController()
+
             Scaffold(
                 topBar = {
                     TopAppBar(title = { Text("Asteroid App") }, actions = {
@@ -168,6 +176,17 @@ fun HomeScreen(mainViewModel: MainViewModel) {
         //however this creates a rendering issue where composables beneath this composable will be shifted down
         //if we use a boolean flag to make this Column composable shrink to size 0.dp, there is still a rendering lapse
         //that looks janky
+        DisposableEffect(Unit) {
+            val timer = Timer()
+            timer.scheduleAtFixedRate(0, 1000) {
+                // Update UI every second
+            }
+            onDispose {
+                timer.cancel()
+                Log.v("dispose", "ObserveMasterList disposed")
+
+            }
+        }
         Column {
             val imageLoader = ImageLoader.Builder(LocalContext.current).logger(DebugLogger())
                 .build()
@@ -207,7 +226,7 @@ fun HomeScreen(mainViewModel: MainViewModel) {
 fun HomeScreenPreview() {
     MaterialTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            val test = MainViewModel(application = Application(), SavedStateHandle())
+            val test = MainViewModel(application = ApplicationClass(), SavedStateHandle())
             test._masterList.value = listOf()
             test.menuItemSelected.value = "Weekly"
 

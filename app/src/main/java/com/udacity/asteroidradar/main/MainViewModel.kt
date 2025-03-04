@@ -2,6 +2,7 @@ package com.udacity.asteroidradar.main
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,9 +13,12 @@ import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.pictureOfDayApi
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.repository.AsteroidRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel (application: Application, private val savedStateHandle: SavedStateHandle) : AndroidViewModel(application)
+@HiltViewModel
+class MainViewModel @Inject constructor(application: Application, private val savedStateHandle: SavedStateHandle) : AndroidViewModel(application)
 {
 /*
     private val database = VideosDatabase.getDatabase(application)
@@ -39,7 +43,7 @@ class MainViewModel (application: Application, private val savedStateHandle: Sav
         }
     }*/
     var menuItemSelected = MutableLiveData("Weekly")
-
+    val test = mutableStateOf(true)
     var detailClick : MutableLiveData<Asteroid>
         set(value) {
             if (value == null){

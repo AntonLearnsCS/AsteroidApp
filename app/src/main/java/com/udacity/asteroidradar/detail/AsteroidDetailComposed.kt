@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar.detail
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +21,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -31,11 +33,27 @@ import androidx.compose.ui.unit.dp
 import com.example.asteroidComposed.R
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.testAsteroid
+import java.util.Timer
+import kotlin.concurrent.scheduleAtFixedRate
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AsteroidDetailComposed(asteroid: Asteroid, paddingValues: PaddingValues){
+
+    DisposableEffect(Unit) {
+        val timer = Timer()
+        timer.scheduleAtFixedRate(0, 1000) {
+            // Update UI every second
+        }
+        onDispose {
+            timer.cancel()
+            Log.v("dispose", "AsteroidDetailComposed disposed")
+
+        }
+    }
+
+
     val image = if (asteroid.isPotentiallyHazardous) R.drawable.asteroid_hazardous else R.drawable.asteroid_safe
     val modifier = Modifier.padding(5.dp)
     val openAlertDialog = rememberSaveable { mutableStateOf(false) }
